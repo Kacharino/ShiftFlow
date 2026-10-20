@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Shift Flow – Stunden (Manager)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>x-dc{display:none}</style>
+<script src="runtime.js" defer></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F5F8}
+*{box-sizing:border-box}
+sc-for,sc-if{display:contents}
+a{color:#1E3A66}a:hover{color:#162D51}
+button,input,textarea{font-family:inherit}
+:focus-visible{outline:2px solid #1E3A66;outline-offset:2px}
+.sf-nav:hover{background:#EEF1F5}
+.sf-ghost:hover{background:#EEF1F5}
+.sf-primary:hover{background:#162D51;color:#FFFFFF}
+.sf-row:hover{background:#F7F8FA}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-direction: column; background: #F3F5F8; font-family: 'Manrope', system-ui, sans-serif; color: #161B24; font-size: 14px">
+
+  <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding: 8px 24px; background: #FFFFFF; border-bottom: 1px dashed #9AA3B1; font-size: 12.5px; color: #4A5361">
+    <span style="display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px"><span style="font-weight: 800; letter-spacing: 0.08em; color: #161B24">PROTOTYP</span><span>MVP · Desktop · Beispieldaten</span></span>
+    <span style="display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px">
+      <span>Vorschau als</span>
+      <span role="group" aria-label="Rolle wechseln" style="display: inline-flex; padding: 3px; gap: 2px; background: #EEF1F5; border-radius: 999px">
+        <span aria-current="page" style="padding: 5px 14px; border-radius: 999px; background: #1E3A66; color: #FFFFFF; font-weight: 700">Manager</span>
+        <a href="mitarbeiter-stunden.html" style="padding: 5px 14px; border-radius: 999px; color: #2C3442; font-weight: 700; text-decoration: none">Mitarbeiter</a>
+      </span>
+    </span>
+  </div>
+
+  <div style="flex: 1; display: flex; flex-wrap: wrap; align-items: stretch">
+
+    <nav aria-label="Hauptnavigation" style="display: flex; flex-direction: column; gap: 24px; background: #FFFFFF; border-right: 1px solid #DCE1E8; flex: {{ nav.flex }}; padding: {{ nav.pad }}">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-direction: {{ nav.headDir }}">
+        <a href="manager-dashboard.html" aria-label="Shift Flow, zum Dashboard" style="display: flex; align-items: center; gap: 10px; padding: 4px; text-decoration: none; color: #161B24">
+          <svg width="32" height="32" viewBox="0 0 36 36" aria-hidden="true" style="flex-shrink: 0"><rect width="36" height="36" rx="10" fill="#1E3A66"></rect><rect x="8" y="11" width="14" height="5" rx="2.5" fill="#FFFFFF"></rect><rect x="14" y="20" width="14" height="5" rx="2.5" fill="#9FB6DA"></rect></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span style="font-size: 18px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap">Shift Flow</span></sc-if>
+        </a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span style="padding: 0 12px 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #5E6775">MENÜ</span></sc-if>
+        <a href="manager-dashboard.html" class="sf-nav" aria-label="Dashboard" title="{{ nav.tipDash }}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 600; color: #2C3442; padding: {{ nav.itemPad }}; justify-content: {{ nav.justify }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span>Dashboard</span></sc-if>
+        </a>
+        <a href="manager-schichtplan.html" class="sf-nav" aria-label="Schichtplan" title="{{ nav.tipPlan }}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 600; color: #2C3442; padding: {{ nav.itemPad }}; justify-content: {{ nav.justify }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span>Schichtplan</span></sc-if>
+        </a>
+        <a href="manager-stunden.html" aria-current="page" aria-label="Stunden" title="{{ nav.tipStunden }}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 700; color: #1E3A66; background: #E6ECF5; padding: {{ nav.itemPad }}; justify-content: {{ nav.justify }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span>Stunden</span></sc-if>
+        </a>
+        <a href="manager-team.html" class="sf-nav" aria-label="Team" title="{{ nav.tipTeam }}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 600; color: #2C3442; padding: {{ nav.itemPad }}; justify-content: {{ nav.justify }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span>Team</span></sc-if>
+        </a>
+      </div>
+      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 4px; padding-top: 16px; border-top: 1px solid #E6E9EE">
+        <a href="manager-profil.html" class="sf-nav" aria-label="Profil &amp; Einstellungen" title="{{ nav.tipProfil }}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 600; color: #2C3442; padding: {{ nav.itemPad }}; justify-content: {{ nav.justify }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span style="white-space: nowrap">Profil &amp; Einstellungen</span></sc-if>
+        </a>
+        <div title="{{ nav.tipUser }}" style="display: flex; align-items: center; gap: 10px; padding: 10px 0; justify-content: {{ nav.justify }}">
+          <span style="width: 36px; height: 36px; flex-shrink: 0; border-radius: 999px; background: #E6ECF5; color: #1E3A66; font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; justify-content: center">MH</span>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span style="display: flex; flex-direction: column; min-width: 0"><span style="font-weight: 700">Maria H.</span><span style="font-size: 12px; color: #5E6775">Manager · Mitarbeiter</span></span></sc-if>
+        </div>
+        <a href="index.html" class="sf-nav" aria-label="Abmelden" title="{{ nav.tipLogout }}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 600; color: #2C3442; padding: {{ nav.itemPad }}; justify-content: {{ nav.justify }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span>Abmelden</span></sc-if>
+        </a>
+      </div>
+    </nav>
+
+    <main style="flex: 999 1 560px; min-width: 0; padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 18px">
+
+      <header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h1 style="margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.01em">Stunden</h1>
+          <p style="margin: 0; color: #4A5361">{{ periodLabel }}</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+          <span style="display: inline-flex; align-items: center; gap: 4px">
+            <button type="button" aria-label="Vorheriger Monat" onClick="{{ prev }}" class="sf-ghost" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #DCE1E8; background: #FFFFFF; border-radius: 10px; color: #2C3442; cursor: pointer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M15 18l-6-6 6-6"></path></svg>
+            </button>
+            <button type="button" aria-label="Nächster Monat" onClick="{{ next }}" class="sf-ghost" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #DCE1E8; background: #FFFFFF; border-radius: 10px; color: #2C3442; cursor: pointer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M9 18l6-6-6-6"></path></svg>
+            </button>
+          </span>
+        </div>
+      </header>
+
+      <section aria-label="Stunden pro Person" style="background: #FFFFFF; border: 1px solid #DCE1E8; border-radius: 16px; overflow: hidden">
+        <div style="overflow-x: auto">
+          <div style="min-width: 860px">
+            <div style="display: grid; grid-template-columns: minmax(220px, 2fr) repeat(3, minmax(100px, 1fr)) 56px; gap: 12px; align-items: center; padding: 12px 20px; background: #FAFBFC; border-bottom: 1px solid #DCE1E8; font-size: 12px; font-weight: 800; color: #4A5361; letter-spacing: 0.02em">
+              <span>Person</span><span>Schichten</span><span>Geleistet (netto)</span><span>Noch geplant</span><span></span>
+            </div>
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+              <div style="border-bottom: 1px solid #EEF1F4">
+                <button type="button" class="sf-row" onClick="{{ r.toggle }}" aria-expanded="{{ r.expandedStr }}" style="width: 100%; display: grid; grid-template-columns: minmax(220px, 2fr) repeat(3, minmax(100px, 1fr)) 56px; gap: 12px; align-items: center; padding: 14px 20px; border: 0; background: transparent; text-align: left; cursor: pointer; color: #161B24; font-size: 14px">
+                  <span style="display: flex; align-items: center; gap: 12px; min-width: 0">
+                    <span style="width: 36px; height: 36px; flex-shrink: 0; border-radius: 999px; background: #E6ECF5; color: #1E3A66; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center">{{ r.ini }}</span>
+                    <span style="font-weight: 700; color: {{ r.nameFg }}">{{ r.name }}</span>
+                    <sc-if value="{{ r.inactive }}" hint-placeholder-val="{{ false }}"><span style="padding: 2px 8px; border-radius: 999px; background: #EEF1F5; color: #4A5361; font-size: 11px; font-weight: 700">inaktiv</span></sc-if>
+                  </span>
+                  <span style="font-variant-numeric: tabular-nums">{{ r.count }}</span>
+                  <span style="font-weight: 800; font-variant-numeric: tabular-nums">{{ r.done }} h</span>
+                  <span style="color: #4A5361; font-variant-numeric: tabular-nums">{{ r.plan }}</span>
+                  <span style="display: inline-flex; justify-content: flex-end; color: #4A5361">
+                    <sc-if value="{{ r.expanded }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M18 15l-6-6-6 6"></path></svg></sc-if>
+                    <sc-if value="{{ r.collapsed }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M6 9l6 6 6-6"></path></svg></sc-if>
+                  </span>
+                </button>
+                <sc-if value="{{ r.expanded }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding: 4px 20px 16px 68px; background: #FAFBFC; border-top: 1px solid #EEF1F4">
+                    <sc-for list="{{ r.entries }}" as="e">
+                      <div style="display: flex; flex-direction: column; gap: 6px; padding: 12px 0; border-bottom: 1px solid #EEF1F4">
+                        <div style="display: grid; grid-template-columns: 100px minmax(160px, 1.4fr) minmax(170px, 1.4fr) 90px minmax(130px, 1fr) 120px; gap: 12px; align-items: center">
+                          <span style="font-weight: 700; font-variant-numeric: tabular-nums">{{ e.date }}</span>
+                          <span style="display: inline-flex; align-items: center; gap: 8px; min-width: 0"><span aria-hidden="true" style="width: 10px; height: 10px; flex-shrink: 0; border-radius: 3px; background: {{ e.bg }}; border: 1.5px solid {{ e.border }}"></span><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ e.title }}</span></span>
+                          <span style="display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-variant-numeric: tabular-nums">
+                            <span style="color: {{ e.plannedFg }}; text-decoration: {{ e.plannedDeco }}">{{ e.planned }}</span>
+                            <sc-if value="{{ e.hasActual }}" hint-placeholder-val="{{ false }}"><span style="font-weight: 800">{{ e.actual }}</span></sc-if>
+                          </span>
+                          <span style="font-weight: 800; font-variant-numeric: tabular-nums">{{ e.net }}</span>
+                          <span><span style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; background: {{ e.chipBg }}; color: {{ e.chipFg }}; border: 1px {{ e.chipBorderStyle }} {{ e.chipBorder }}">{{ e.status }}</span></span>
+                          <span style="display: flex; justify-content: flex-end">
+                            <sc-if value="{{ e.canCorrect }}" hint-placeholder-val="{{ true }}">
+                              <button type="button" onClick="{{ e.correct }}" class="sf-ghost" style="height: 34px; padding: 0 12px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid #C9D0DA; border-radius: 8px; background: #FFFFFF; color: #2C3442; font-weight: 700; font-size: 13px; cursor: pointer">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path></svg>
+                                Korrigieren
+                              </button>
+                            </sc-if>
+                          </span>
+                        </div>
+                        <sc-if value="{{ e.hasComment }}" hint-placeholder-val="{{ false }}">
+                          <span style="display: inline-flex; align-items: flex-start; gap: 8px; margin-left: 112px; font-size: 13px; color: #4A5361">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                            <span>{{ e.comment }}</span>
+                          </span>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ r.noEntries }}" hint-placeholder-val="{{ false }}">
+                      <p style="margin: 0; padding: 14px 0; color: #4A5361">Keine Schichten in diesem Zeitraum.</p>
+                    </sc-if>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <sc-if value="{{ showCorr }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 50; background: rgba(22,27,36,0.45); display: flex; align-items: flex-start; justify-content: center; padding: 48px 16px; overflow-y: auto">
+      <div role="dialog" aria-modal="true" aria-labelledby="dlg-corr-title" style="width: 100%; max-width: 560px; background: #FFFFFF; border-radius: 20px; box-shadow: 0 24px 56px rgba(16,24,40,0.28); display: flex; flex-direction: column">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 20px 24px 4px">
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <h2 id="dlg-corr-title" style="margin: 0; font-size: 20px; font-weight: 800">Stunden korrigieren</h2>
+            <p style="margin: 0; color: #4A5361">{{ corr.sub }}</p>
+          </div>
+          <button type="button" aria-label="Schließen" onClick="{{ close }}" class="sf-ghost" style="width: 40px; height: 40px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; border: 0; background: transparent; border-radius: 10px; color: #2C3442; cursor: pointer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <div style="padding: 16px 24px 20px; display: flex; flex-direction: column; gap: 18px">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 12px; background: #F4F6F9">
+            <span style="color: #4A5361">Geplant</span>
+            <span style="font-weight: 800; font-variant-numeric: tabular-nums">{{ corr.planned }}</span>
+          </div>
+          <div role="radiogroup" aria-label="Art der Korrektur" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+            <sc-for list="{{ corr.modes }}" as="m" hint-placeholder-count="2">
+              <button type="button" role="radio" aria-checked="{{ m.checked }}" onClick="{{ m.pick }}" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; border-radius: 12px; background: #FFFFFF; text-align: left; cursor: pointer; border: {{ m.ringW }} solid {{ m.ring }}">
+                <span style="font-weight: 800">{{ m.label }}</span>
+                <span style="font-size: 12.5px; color: #4A5361">{{ m.sub }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ corr.isTime }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-wrap: wrap; gap: 16px">
+              <div style="flex: 1 1 140px; display: flex; flex-direction: column; gap: 6px">
+                <label for="corr-start" style="font-size: 13px; font-weight: 700; color: #2C3442">Tatsächlich von</label>
+                <input id="corr-start" type="time" step="900" value="{{ corr.startValue }}" onChange="{{ corr.setStart }}" style="height: 46px; padding: 0 12px; border: 1px solid #B9C1CD; border-radius: 10px; background: #FFFFFF; font-size: 15px; color: #161B24">
+              </div>
+              <div style="flex: 1 1 140px; display: flex; flex-direction: column; gap: 6px">
+                <label for="corr-end" style="font-size: 13px; font-weight: 700; color: #2C3442">Tatsächlich bis</label>
+                <input id="corr-end" type="time" step="900" value="{{ corr.endValue }}" onChange="{{ corr.setEnd }}" style="height: 46px; padding: 0 12px; border: 1px solid #B9C1CD; border-radius: 10px; background: #FFFFFF; font-size: 15px; color: #161B24">
+              </div>
+            </div>
+          </sc-if>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 12px; background: #EEF3FA; color: #1E3A66">
+            <span style="font-weight: 600">Neu</span>
+            <span style="font-weight: 800; font-variant-numeric: tabular-nums">{{ corr.result }}</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="corr-comment" style="font-size: 13px; font-weight: 700; color: #2C3442">Kommentar <span style="font-weight: 500; color: #5E6775">(optional · für den Mitarbeiter sichtbar)</span></label>
+            <textarea id="corr-comment" rows="3" placeholder="z. B. Lieferung angenommen, länger geblieben" value="{{ corr.comment }}" onChange="{{ corr.setComment }}" style="padding: 10px 12px; border: 1px solid #B9C1CD; border-radius: 10px; background: #FFFFFF; font-size: 15px; color: #161B24; resize: vertical"></textarea>
+          </div>
+          <sc-if value="{{ corr.hasError }}" hint-placeholder-val="{{ false }}">
+            <p role="alert" style="margin: 0; padding: 10px 14px; border-radius: 10px; background: #FDECEA; color: #8A1C12; font-weight: 700; font-size: 13px">{{ corr.error }}</p>
+          </sc-if>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 24px; border-top: 1px solid #E6E9EE">
+          <span>
+            <sc-if value="{{ corr.canReset }}" hint-placeholder-val="{{ false }}">
+              <button type="button" onClick="{{ corr.reset }}" class="sf-ghost" style="height: 42px; padding: 0 12px; border: 0; border-radius: 10px; background: transparent; color: #8A1C12; font-weight: 700; cursor: pointer">Korrektur entfernen</button>
+            </sc-if>
+          </span>
+          <span style="display: inline-flex; gap: 10px">
+            <button type="button" onClick="{{ close }}" class="sf-ghost" style="height: 42px; padding: 0 18px; border: 1px solid #C9D0DA; border-radius: 10px; background: #FFFFFF; color: #2C3442; font-weight: 700; cursor: pointer">Abbrechen</button>
+            <button type="button" onClick="{{ corr.save }}" class="sf-primary" style="height: 42px; padding: 0 18px; border: 0; border-radius: 10px; background: #1E3A66; color: #FFFFFF; font-weight: 700; cursor: pointer">Speichern</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showResetCfm }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 55; background: rgba(22,27,36,0.45); display: flex; align-items: flex-start; justify-content: center; padding: 120px 16px; overflow-y: auto">
+      <div role="alertdialog" aria-modal="true" aria-labelledby="showResetCfm-title" aria-describedby="showResetCfm-text" style="width: 100%; max-width: 460px; background: #FFFFFF; border-radius: 20px; box-shadow: 0 24px 56px rgba(16,24,40,0.28); display: flex; flex-direction: column">
+        <div style="padding: 22px 24px 14px; display: flex; flex-direction: column; gap: 8px">
+          <h2 id="showResetCfm-title" style="margin: 0; font-size: 19px; font-weight: 800">Korrektur entfernen?</h2>
+          <p id="showResetCfm-text" style="margin: 0; color: #4A5361; line-height: 1.55">Die Schicht zählt danach wieder mit den geplanten Zeiten. Der Kommentar wird gelöscht.</p>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; padding: 16px 24px 20px">
+          <button type="button" onClick="{{ closeResetCfm }}" class="sf-ghost" style="height: 42px; padding: 0 18px; border: 1px solid #C9D0DA; border-radius: 10px; background: #FFFFFF; color: #2C3442; font-weight: 700; cursor: pointer">Abbrechen</button>
+          <button type="button" onClick="{{ corr.resetOk }}" style="height: 42px; padding: 0 18px; border: 0; border-radius: 10px; background: #8A1C12; color: #FFFFFF; font-weight: 700; cursor: pointer">Entfernen</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 60; background: #161B24; color: #FFFFFF; padding: 12px 18px; border-radius: 12px; font-weight: 600; box-shadow: 0 12px 32px rgba(16,24,40,0.24)">{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+var PEOPLE = {
+  me: { name: 'Maria H. (Du)', ini: 'MH' }, anna: { name: 'Anna K.', ini: 'AK' }, ben: { name: 'Ben M.', ini: 'BM' },
+  clara: { name: 'Clara S.', ini: 'CS' }, david: { name: 'David R.', ini: 'DR' }, elif: { name: 'Elif T.', ini: 'ET' },
+  felix: { name: 'Felix W.', ini: 'FW' }, gregor: { name: 'Gregor P.', ini: 'GP', inactive: true }
+};
+var ORDER = ['me', 'anna', 'ben', 'clara', 'david', 'elif', 'felix', 'gregor'];
+var KINDS = {
+  frueh: { label: 'Frühschicht', bg: '#FFF3C4', border: '#C9A227', start: 420, end: 780 },
+  spaet: { label: 'Spätschicht', bg: '#DDF2E4', border: '#4E9E6B', start: 720, end: 1200 }
+};
+var PATTERN = {
+  me: { 0: 'spaet', 2: 'frueh', 5: 'spaet' }, anna: { 0: 'frueh', 1: 'frueh', 3: 'frueh', 5: 'frueh' },
+  ben: { 0: 'frueh', 1: 'spaet', 4: 'frueh' }, clara: { 0: 'spaet', 2: 'spaet', 4: 'spaet', 6: 'spaet' },
+  david: { 2: 'spaet', 4: 'spaet' }, elif: { 4: 'frueh', 6: 'frueh' }, felix: { 2: 'frueh', 5: 'frueh' },
+  gregor: { 1: 'spaet', 3: 'spaet' }
+};
+var SKIP = { 'david_2026-10-23': true };
+var WD = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+var WEEKS = { 40: 'KW 40 · 28. Sept. – 4. Okt. 2026', 41: 'KW 41 · 5.–11. Oktober 2026', 42: 'KW 42 · 12.–18. Oktober 2026', 43: 'KW 43 · 19.–25. Oktober 2026' };
+var NOW_D = 19, NOW_MIN = 897;
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function fmt(m) { m = ((m % 1440) + 1440) % 1440; return pad(Math.floor(m / 60)) + ':' + pad(m % 60); }
+function overEnd(start, end) { return end <= start ? end + 1440 : end; }
+function spanText(start, end) { return fmt(start) + '–' + fmt(end) + (end > 1440 ? ' (+1 Tag)' : ''); }
+function num(v) { return (Math.round(v * 10) / 10).toFixed(1).replace('.', ','); }
+function weekOf(d) { return d <= 4 ? 40 : d <= 11 ? 41 : d <= 18 ? 42 : 43; }
+function netOf(start, end) { var d = end - start; return d > 360 ? d - 30 : Math.max(0, d); }
+function parseTime(v) {
+  if (!v) return null;
+  var p = String(v).split(':'), h = parseInt(p[0], 10), mi = parseInt(p[1], 10);
+  return (isNaN(h) || isNaN(mi)) ? null : h * 60 + mi;
+}
+function buildEntries() {
+  var out = [];
+  for (var d = 1; d <= 25; d++) {
+    var wd = (new Date(2026, 9, d).getDay() + 6) % 7;
+    var iso = '2026-10-' + pad(d);
+    ORDER.forEach(function (pid) {
+      var kind = PATTERN[pid][wd];
+      if (!kind || SKIP[pid + '_' + iso]) return;
+      if (pid === 'gregor' && d > 10) return;
+      var k = KINDS[kind];
+      var state = (d < NOW_D || (d === NOW_D && k.end <= NOW_MIN)) ? 'done' : (d === NOW_D && k.start <= NOW_MIN ? 'running' : 'planned');
+      out.push({ key: pid + '_' + iso, pid: pid, d: d, wd: wd, kind: kind, start: k.start, end: k.end, state: state, label: WD[wd] + ', ' + pad(d) + '.10.' });
+    });
+  }
+  return out;
+}
+var ENTRIES = buildEntries();
+function initialCorr() { return {}; }
+function entryNet(e, c) {
+  if (c && c.type === 'noshow') return 0;
+  if (c && c.type === 'time') return netOf(c.start, c.end);
+  return netOf(e.start, e.end);
+}
+function navVals(self, labels) {
+  var open = !self.state.navCollapsed;
+  function tip(t) { return open ? '' : t; }
+  return {
+    open: open, closed: !open,
+    flex: open ? '1 1 220px' : '0 0 72px', pad: open ? '20px 14px' : '20px 12px',
+    headDir: open ? 'row' : 'column', itemPad: open ? '0 12px' : '0', justify: open ? 'flex-start' : 'center',
+    expanded: open ? 'true' : 'false', toggleLabel: open ? 'Menü einklappen' : 'Menü ausklappen',
+    toggle: function () { self.setState({ navCollapsed: !self.state.navCollapsed }); },
+    tipDash: tip('Dashboard'), tipPlan: tip('Schichtplan'), tipStunden: tip(labels.stunden),
+    tipTeam: tip('Team'), tipExport: tip('Export · nach dem MVP'), tipProfil: tip('Profil & Einstellungen'),
+    tipUser: tip(labels.user), tipLogout: tip('Abmelden')
+  };
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { period: 'month', week: 42, scope: 'team', open: { anna: true }, corr: initialCorr(), form: null, toast: null, navCollapsed: false };
+  }
+  componentWillUnmount() { clearTimeout(this._t); }
+  showToast(msg) {
+    var self = this;
+    clearTimeout(this._t);
+    this.setState({ toast: msg });
+    this._t = setTimeout(function () { self.setState({ toast: null }); }, 3000);
+  }
+  setForm(patch) { this.setState({ form: Object.assign({}, this.state.form, patch) }); }
+  openCorr(e) {
+    var c = this.state.corr[e.key];
+    this.setState({ form: {
+      key: e.key, mode: c && c.type === 'noshow' ? 'noshow' : 'time',
+      start: c && c.type === 'time' ? c.start : e.start, end: c && c.type === 'time' ? c.end : e.end,
+      comment: c ? c.comment : '', error: ''
+    } });
+  }
+  saveCorr() {
+    var f = this.state.form, e = ENTRIES.filter(function (x) { return x.key === f.key; })[0];
+    if (f.mode === 'time' && f.end % 1440 === f.start % 1440) { this.setForm({ error: 'Beginn und Ende dürfen nicht gleich sein.' }); return; }
+    var endM = overEnd(f.start, f.end);
+    var corr = Object.assign({}, this.state.corr);
+    if (f.mode === 'time' && f.start === e.start && endM === e.end && !f.comment) {
+      delete corr[f.key];
+    } else {
+      corr[f.key] = f.mode === 'noshow' ? { type: 'noshow', comment: f.comment } : { type: 'time', start: f.start, end: endM, comment: f.comment };
+    }
+    this.setState({ corr: corr, form: null });
+    this.showToast('Korrektur gespeichert · ' + PEOPLE[e.pid].name.replace(' (Du)', '') + ', ' + e.label);
+  }
+  renderVals() {
+    var self = this, st = this.state, isWeek = st.period === 'week';
+    var inPeriod = ENTRIES.filter(function (e) { return isWeek ? weekOf(e.d) === st.week : true; });
+    var pids = st.scope === 'mine' ? ['me'] : ORDER;
+    var tDone = 0, tPlan = 0, tCorr = 0;
+
+    var rows = pids.map(function (pid) {
+      var list = inPeriod.filter(function (e) { return e.pid === pid; });
+      var done = 0, plan = 0, corrN = 0, count = 0;
+      var entries = list.map(function (e) {
+        var c = st.corr[e.key], k = KINDS[e.kind], net = entryNet(e, c);
+        if (c) corrN++;
+        if (e.state === 'done') { done += net; count++; } else { plan += net; }
+        var status, chipBg = '#FFFFFF', chipFg = '#2C3442', chipBorder = '#C9D0DA', chipStyle = 'solid';
+        if (c && c.type === 'noshow') { status = 'Nicht erschienen'; chipBg = '#FDECEA'; chipFg = '#8A1C12'; chipBorder = '#F3C5BF'; }
+        else if (c) { status = 'Korrigiert'; chipFg = '#1E3A66'; chipBorder = '#1E3A66'; }
+        else if (e.state === 'done') { status = 'Geleistet'; chipBg = '#E6ECF5'; chipFg = '#1E3A66'; chipBorder = '#E6ECF5'; }
+        else if (e.state === 'running') { status = 'Läuft gerade'; chipBg = '#E3F2E8'; chipFg = '#1B6B3A'; chipBorder = '#E3F2E8'; }
+        else { status = 'Geplant'; chipStyle = 'dashed'; chipBorder = '#5E6775'; }
+        return {
+          date: e.label, title: k.label, bg: k.bg, border: k.border,
+          planned: fmt(e.start) + '–' + fmt(e.end),
+          plannedFg: c ? '#5E6775' : '#161B24', plannedDeco: c ? 'line-through' : 'none',
+          hasActual: !!c, actual: c ? (c.type === 'noshow' ? '0 h' : spanText(c.start, c.end)) : '',
+          net: num(net / 60) + ' h',
+          status: status, chipBg: chipBg, chipFg: chipFg, chipBorder: chipBorder, chipBorderStyle: chipStyle,
+          canCorrect: false,
+          hasComment: !!(c && c.comment), comment: c ? c.comment : '',
+          correct: function () { self.openCorr(e); }
+        };
+      });
+      tDone += done; tPlan += plan; tCorr += corrN;
+      var isOpen = !!st.open[pid];
+      return {
+        name: PEOPLE[pid].name, ini: PEOPLE[pid].ini, inactive: !!PEOPLE[pid].inactive,
+        nameFg: PEOPLE[pid].inactive ? '#4A5361' : '#161B24',
+        count: count, done: num(done / 60), plan: plan ? num(plan / 60) + ' h' : '–',
+        hasCorr: corrN > 0, noCorr: corrN === 0, corr: corrN,
+        expanded: isOpen, collapsed: !isOpen, expandedStr: isOpen ? 'true' : 'false',
+        entries: isOpen ? entries : [], noEntries: isOpen && entries.length === 0,
+        toggle: function () { var o = Object.assign({}, self.state.open); o[pid] = !o[pid]; self.setState({ open: o }); }
+      };
+    });
+
+    var corrV = { modes: [] };
+    var f = st.form;
+    if (f) {
+      var e = ENTRIES.filter(function (x) { return x.key === f.key; })[0];
+      var isTime = f.mode === 'time';
+      var endN = overEnd(f.start, f.end);
+      var newNet = isTime ? netOf(f.start, endN) : 0;
+      var same = f.end % 1440 === f.start % 1440;
+      corrV = {
+        sub: PEOPLE[e.pid].name.replace(' (Du)', '') + ' · ' + KINDS[e.kind].label + ' · ' + e.label + '2026',
+        planned: fmt(e.start) + '–' + fmt(e.end) + ' · ' + num(netOf(e.start, e.end) / 60) + ' h netto',
+        modes: [
+          { id: 'time', label: 'Zeiten anpassen', sub: 'Früher/später begonnen oder beendet' },
+          { id: 'noshow', label: 'Nicht erschienen', sub: 'Schicht zählt mit 0 h' }
+        ].map(function (m) {
+          var sel = m.id === f.mode;
+          return { label: m.label, sub: m.sub, checked: sel ? 'true' : 'false', ring: sel ? '#1E3A66' : '#DCE1E8', ringW: sel ? '2px' : '1px',
+            pick: function () { self.setForm({ mode: m.id, error: '' }); } };
+        }),
+        isTime: isTime,
+        startValue: fmt(f.start), endValue: fmt(f.end),
+        setStart: function (ev) { var v = parseTime(ev.target.value); if (v != null) self.setForm({ start: v, error: '' }); },
+        setEnd: function (ev) { var v = parseTime(ev.target.value); if (v != null) self.setForm({ end: v, error: '' }); },
+        result: isTime ? (!same ? spanText(f.start, endN) + ' · ' + num(newNet / 60) + ' h netto' : '–') : 'Nicht erschienen · 0,0 h',
+        comment: f.comment, setComment: function (ev) { self.setForm({ comment: ev.target.value }); },
+        hasError: !!f.error, error: f.error,
+        canReset: !!st.corr[f.key],
+        reset: function () { self.setState({ resetCfm: true }); },
+        resetOk: function () {
+          var corr = Object.assign({}, self.state.corr);
+          delete corr[f.key];
+          self.setState({ corr: corr, form: null, resetCfm: false });
+          self.showToast('Korrektur entfernt');
+        },
+        save: function () { self.saveCorr(); }
+      };
+    }
+
+    function shift(dir) {
+      if (isWeek) {
+        var w = st.week + dir;
+        if (w < 40 || w > 43) { self.showToast('Im Wireframe sind nur KW 40–43 befüllt'); return; }
+        self.setState({ week: w });
+      } else {
+        self.showToast('Im Wireframe ist nur der Oktober befüllt');
+      }
+    }
+
+    return {
+      nav: navVals(this, { stunden: 'Stunden', user: 'Maria H. · Manager' }),
+      periodLabel: isWeek ? WEEKS[st.week] : 'Oktober 2026 · Schichten bis 25.10.',
+      prev: function () { shift(-1); }, next: function () { shift(1); },
+      weekPressed: isWeek ? 'true' : 'false', monthPressed: isWeek ? 'false' : 'true',
+      weekBg: isWeek ? '#FFFFFF' : 'transparent', weekFg: isWeek ? '#1E3A66' : '#4A5361',
+      monthBg: isWeek ? 'transparent' : '#FFFFFF', monthFg: isWeek ? '#4A5361' : '#1E3A66',
+      showWeek: function () { self.setState({ period: 'week' }); },
+      showMonth: function () { self.setState({ period: 'month' }); },
+      scopes: [{ id: 'team', label: 'Team' }, { id: 'mine', label: 'Meine Stunden' }].map(function (s) {
+        var on = st.scope === s.id;
+        return { label: s.label, pressed: on ? 'true' : 'false', bg: on ? '#1E3A66' : '#FFFFFF', fg: on ? '#FFFFFF' : '#2C3442', border: on ? '#1E3A66' : '#C9D0DA',
+          pick: function () { self.setState({ scope: s.id }); } };
+      }),
+      totalDone: num(tDone / 60), totalPlan: num(tPlan / 60), totalCorr: tCorr,
+      rows: rows,
+      showCorr: !!f, corr: corrV,
+      showResetCfm: !!(f && st.resetCfm), closeResetCfm: function () { self.setState({ resetCfm: false }); },
+      close: function () { self.setState({ form: null }); },
+      hasToast: !!st.toast, toast: st.toast || ''
+    };
+  }
+}
+</script>
+</body>
+</html>

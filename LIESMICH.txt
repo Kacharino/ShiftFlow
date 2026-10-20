@@ -1,0 +1,12 @@
+Shift Flow – MVP-Prototyp (Desktop)
+
+Öffnen: index.html im Browser öffnen (Doppelklick reicht). Alle Dateien müssen im selben Ordner bleiben.
+Start ist der Login. Oben in der grauen Leiste wechselst du zwischen Manager- und Mitarbeiter-Ansicht.
+
+Hinweise
+- Alle Namen und Zahlen sind Beispieldaten. Befüllt ist die Woche 19.–25. Oktober 2026.
+- Jeder Screen hat seinen eigenen Stand: Was du auf einer Seite änderst, ist auf der nächsten nicht sichtbar, und beim Neuladen ist alles wieder wie am Anfang.
+- Der Prototyp zeigt nur den MVP. Monatsansicht, Filter, Wiederholen, Bearbeiten, Korrekturen, Vorlagen und die Mobil-Screens kommen später.
+- Für die Schrift (Manrope) braucht es eine Internetverbindung, sonst wird eine Systemschrift verwendet.
+
+Hosten (optional): Den Ordner z. B. auf GitHub Pages hochladen, dann ist index.html die Startseite.

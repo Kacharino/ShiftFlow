@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Shift Flow – Anmelden</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>x-dc{display:none}</style>
+<script src="runtime.js" defer></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F5F8}
+*{box-sizing:border-box}
+sc-for,sc-if{display:contents}
+a{color:#1E3A66}a:hover{color:#162D51}
+button,input{font-family:inherit}
+:focus-visible{outline:2px solid #1E3A66;outline-offset:2px}
+.sf-primary:hover{background:#162D51;color:#FFFFFF}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-direction: column; background: #F3F5F8; font-family: 'Manrope', system-ui, sans-serif; color: #161B24; font-size: 14px">
+  <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding: 8px 24px; background: #FFFFFF; border-bottom: 1px dashed #9AA3B1; font-size: 12.5px; color: #4A5361">
+    <span style="display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px"><span style="font-weight: 800; letter-spacing: 0.08em; color: #161B24">PROTOTYP</span><span>MVP · Desktop · Beispieldaten</span></span>
+    <span style="display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px">
+      <span>Demo: anmelden als</span>
+      <span role="group" aria-label="Rolle für die Vorschau" style="display: inline-flex; padding: 3px; gap: 2px; background: #EEF1F5; border-radius: 999px">
+        <a href="manager-dashboard.html" style="padding: 5px 14px; border-radius: 999px; color: #2C3442; font-weight: 700; text-decoration: none">Manager</a>
+        <a href="mitarbeiter-dashboard.html" style="padding: 5px 14px; border-radius: 999px; color: #2C3442; font-weight: 700; text-decoration: none">Mitarbeiter</a>
+      </span>
+    </span>
+  </div>
+
+  <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 56px 16px">
+    <div style="width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 28px">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 12px">
+        <svg width="40" height="40" viewBox="0 0 36 36" aria-hidden="true" style="flex-shrink: 0"><rect width="36" height="36" rx="10" fill="#1E3A66"></rect><rect x="8" y="11" width="14" height="5" rx="2.5" fill="#FFFFFF"></rect><rect x="14" y="20" width="14" height="5" rx="2.5" fill="#9FB6DA"></rect></svg>
+        <span style="font-size: 24px; font-weight: 800; letter-spacing: -0.01em">Shift Flow</span>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #DCE1E8; border-radius: 18px; padding: 32px; display: flex; flex-direction: column; gap: 22px; box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 12px 32px rgba(16,24,40,0.06)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.01em">Anmelden</h1>
+          <p style="margin: 0; color: #4A5361; line-height: 1.5">Melde dich mit deiner E-Mail-Adresse und deinem Passwort an.</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="login-email" style="font-size: 13px; font-weight: 700; color: #2C3442">E-Mail</label>
+          <div style="position: relative; display: flex; align-items: center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="position: absolute; left: 14px; color: #5E6775; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; pointer-events: none"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>
+            <input id="login-email" type="email" autocomplete="email" placeholder="name@betrieb.at" style="width: 100%; height: 48px; padding: 0 14px 0 42px; border: 1px solid #B9C1CD; border-radius: 10px; font-size: 15px; background: #FFFFFF; color: #161B24">
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="login-pw" style="font-size: 13px; font-weight: 700; color: #2C3442">Passwort</label>
+          <div style="position: relative; display: flex; align-items: center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="position: absolute; left: 14px; color: #5E6775; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; pointer-events: none"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+            <input id="login-pw" type="{{ pwType }}" autocomplete="current-password" style="width: 100%; height: 48px; padding: 0 52px 0 42px; border: 1px solid #B9C1CD; border-radius: 10px; font-size: 15px; background: #FFFFFF; color: #161B24">
+            <button type="button" onClick="{{ togglePw }}" aria-label="{{ pwLabel }}" aria-pressed="{{ pwPressed }}" style="position: absolute; right: 4px; width: 44px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 0; background: transparent; color: #4A5361; border-radius: 8px; cursor: pointer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+
+        <a href="manager-dashboard.html" class="sf-primary" style="height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: #1E3A66; color: #FFFFFF; font-weight: 700; font-size: 15px; text-decoration: none">Anmelden</a>
+
+        <div style="display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-radius: 12px; background: #F3F5F8; color: #4A5361; font-size: 13px; line-height: 1.5">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="12" r="9"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+          <span>Passwort vergessen? Dein Manager kann es für dich zurücksetzen.</span>
+        </div>
+      </div>
+
+      <p style="margin: 0; text-align: center; font-size: 13px; color: #5E6775">Noch kein Zugang? Dein Manager legt dein Konto an.</p>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { showPw: false };
+  }
+  renderVals() {
+    var self = this;
+    var on = this.state.showPw;
+    return {
+      pwType: on ? 'text' : 'password',
+      pwLabel: on ? 'Passwort verbergen' : 'Passwort anzeigen',
+      pwPressed: on ? 'true' : 'false',
+      togglePw: function () { self.setState({ showPw: !self.state.showPw }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

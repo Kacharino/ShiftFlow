@@ -1,0 +1,1136 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Shift Flow – Schichtplan (Manager)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>x-dc{display:none}</style>
+<script src="runtime.js" defer></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F5F8}
+*{box-sizing:border-box}
+sc-for,sc-if{display:contents}
+a{color:#1E3A66}a:hover{color:#162D51}
+button,input,select{font-family:inherit}
+:focus-visible{outline:2px solid #1E3A66;outline-offset:2px}
+.sf-nav:hover{background:#EEF1F5}
+.sf-ghost:hover{background:#EEF1F5}
+.sf-primary:hover{background:#162D51;color:#FFFFFF}
+.sf-slot:hover{background:rgba(30,58,102,0.06)}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-direction: column; background: #F3F5F8; font-family: 'Manrope', system-ui, sans-serif; color: #161B24; font-size: 14px">
+
+  <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding: 8px 24px; background: #FFFFFF; border-bottom: 1px dashed #9AA3B1; font-size: 12.5px; color: #4A5361">
+    <span style="display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px"><span style="font-weight: 800; letter-spacing: 0.08em; color: #161B24">PROTOTYP</span><span>MVP · Desktop · Beispieldaten</span></span>
+    <span style="display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px">
+      <span>Vorschau als</span>
+      <span role="group" aria-label="Rolle wechseln" style="display: inline-flex; padding: 3px; gap: 2px; background: #EEF1F5; border-radius: 999px">
+        <span aria-current="page" style="padding: 5px 14px; border-radius: 999px; background: #1E3A66; color: #FFFFFF; font-weight: 700">Manager</span>
+        <a href="mitarbeiter-schichtplan.html" style="padding: 5px 14px; border-radius: 999px; color: #2C3442; font-weight: 700; text-decoration: none">Mitarbeiter</a>
+      </span>
+    </span>
+  </div>
+
+  <div style="flex: 1; display: flex; flex-wrap: wrap; align-items: stretch">
+
+    <nav aria-label="Hauptnavigation" style="display: flex; flex-direction: column; gap: 24px; background: #FFFFFF; border-right: 1px solid #DCE1E8; flex: {{ nav.flex }}; padding: {{ nav.pad }}">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-direction: {{ nav.headDir }}">
+        <a href="manager-dashboard.html" aria-label="Shift Flow, zum Dashboard" style="display: flex; align-items: center; gap: 10px; padding: 4px; text-decoration: none; color: #161B24">
+          <svg width="32" height="32" viewBox="0 0 36 36" aria-hidden="true" style="flex-shrink: 0"><rect width="36" height="36" rx="10" fill="#1E3A66"></rect><rect x="8" y="11" width="14" height="5" rx="2.5" fill="#FFFFFF"></rect><rect x="14" y="20" width="14" height="5" rx="2.5" fill="#9FB6DA"></rect></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span style="font-size: 18px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap">Shift Flow</span></sc-if>
+        </a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span style="padding: 0 12px 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #5E6775">MENÜ</span></sc-if>
+        <a href="manager-dashboard.html" class="sf-nav" aria-label="Dashboard" title="{{ nav.tipDash }}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 600; color: #2C3442; padding: {{ nav.itemPad }}; justify-content: {{ nav.justify }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span>Dashboard</span></sc-if>
+        </a>
+        <a href="manager-schichtplan.html" aria-current="page" aria-label="Schichtplan" title="{{ nav.tipPlan }}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 700; color: #1E3A66; background: #E6ECF5; padding: {{ nav.itemPad }}; justify-content: {{ nav.justify }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span>Schichtplan</span></sc-if>
+        </a>
+        <a href="manager-stunden.html" class="sf-nav" aria-label="Stunden" title="{{ nav.tipStunden }}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 600; color: #2C3442; padding: {{ nav.itemPad }}; justify-content: {{ nav.justify }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span>Stunden</span></sc-if>
+        </a>
+        <a href="manager-team.html" class="sf-nav" aria-label="Team" title="{{ nav.tipTeam }}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 600; color: #2C3442; padding: {{ nav.itemPad }}; justify-content: {{ nav.justify }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span>Team</span></sc-if>
+        </a>
+      </div>
+      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 4px; padding-top: 16px; border-top: 1px solid #E6E9EE">
+        <a href="manager-profil.html" class="sf-nav" aria-label="Profil &amp; Einstellungen" title="{{ nav.tipProfil }}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 600; color: #2C3442; padding: {{ nav.itemPad }}; justify-content: {{ nav.justify }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span style="white-space: nowrap">Profil &amp; Einstellungen</span></sc-if>
+        </a>
+        <div title="{{ nav.tipUser }}" style="display: flex; align-items: center; gap: 10px; padding: 10px 0; justify-content: {{ nav.justify }}">
+          <span style="width: 36px; height: 36px; flex-shrink: 0; border-radius: 999px; background: #E6ECF5; color: #1E3A66; font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; justify-content: center">MH</span>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span style="display: flex; flex-direction: column; min-width: 0"><span style="font-weight: 700">Maria H.</span><span style="font-size: 12px; color: #5E6775">Manager · Mitarbeiter</span></span></sc-if>
+        </div>
+        <a href="index.html" class="sf-nav" aria-label="Abmelden" title="{{ nav.tipLogout }}" style="display: flex; align-items: center; gap: 12px; min-height: 44px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 600; color: #2C3442; padding: {{ nav.itemPad }}; justify-content: {{ nav.justify }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg>
+          <sc-if value="{{ nav.open }}" hint-placeholder-val="{{ true }}"><span>Abmelden</span></sc-if>
+        </a>
+      </div>
+    </nav>
+
+    <main style="flex: 999 1 560px; min-width: 0; padding: 28px 32px 40px; display: flex; flex-direction: column; gap: 18px">
+
+      <header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h1 style="margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.01em">Schichtplan</h1>
+          <p style="margin: 0; color: #4A5361">{{ periodLabel }}</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+          <span style="display: inline-flex; align-items: center; gap: 4px">
+            <button type="button" aria-label="{{ prevLabel }}" onClick="{{ prevP }}" class="sf-ghost" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #DCE1E8; background: #FFFFFF; border-radius: 10px; color: #2C3442; cursor: pointer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M15 18l-6-6 6-6"></path></svg>
+            </button>
+            <button type="button" onClick="{{ todayP }}" class="sf-ghost" style="height: 40px; padding: 0 14px; border: 1px solid #DCE1E8; background: #FFFFFF; border-radius: 10px; font-weight: 700; color: #2C3442; cursor: pointer">Heute</button>
+            <button type="button" aria-label="{{ nextLabel }}" onClick="{{ nextP }}" class="sf-ghost" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #DCE1E8; background: #FFFFFF; border-radius: 10px; color: #2C3442; cursor: pointer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M9 18l6-6-6-6"></path></svg>
+            </button>
+          </span>
+          
+          <button type="button" onClick="{{ openForm }}" class="sf-primary" style="height: 40px; padding: 0 16px; display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 10px; background: #1E3A66; color: #FFFFFF; font-weight: 700; cursor: pointer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round"><path d="M12 5v14M5 12h14"></path></svg>
+            Schicht hinzufügen
+          </button>
+        </div>
+      </header>
+
+      <sc-if value="{{ isWeek }}" hint-placeholder-val="{{ true }}">
+        <section aria-label="Wochenkalender KW 43" style="background: #FFFFFF; border: 1px solid #DCE1E8; border-radius: 16px; overflow: hidden">
+          <div style="overflow-x: auto">
+            <div style="min-width: 980px; user-select: none">
+              <div style="display: grid; grid-template-columns: 56px repeat(7, minmax(0, 1fr)); border-bottom: 1px solid #DCE1E8; background: #FAFBFC">
+                <div></div>
+                <sc-for list="{{ days }}" as="d" hint-placeholder-count="7">
+                  <div style="padding: 10px 8px; border-left: 1px solid #E6E9EE; display: flex; align-items: center; gap: 8px; min-width: 0">
+                    <span style="font-weight: 800; color: #161B24">{{ d.short }}</span>
+                    <span style="padding: 2px 8px; border-radius: 999px; font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; background: {{ d.dateBg }}; color: {{ d.dateFg }}">{{ d.date }}</span>
+                    <sc-if value="{{ d.hasReq }}" hint-placeholder-val="{{ false }}">
+                      <span title="{{ d.reqTitle }}" style="margin-left: auto; display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 800; color: #1E3A66">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+                        {{ d.reqN }}
+                      </span>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display: grid; grid-template-columns: 56px repeat(7, minmax(0, 1fr))">
+                <div style="display: grid; grid-template-rows: repeat(34, 24px)">
+                  <sc-for list="{{ hours }}" as="h" hint-placeholder-count="15">
+                    <div style="padding: 2px 8px 0 0; text-align: right; font-size: 11px; font-weight: 600; color: #5E6775; font-variant-numeric: tabular-nums; grid-row: {{ h.row }}">{{ h.label }}</div>
+                  </sc-for>
+                </div>
+                <sc-for list="{{ days }}" as="d" hint-placeholder-count="7">
+                  <div style="position: relative; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: repeat(34, 24px); border-left: 1px solid #E6E9EE; background: {{ d.colBg }}">
+                    <sc-for list="{{ d.slots }}" as="sl">
+                      <div class="sf-slot" style="grid-column: 1 / -1; grid-row: {{ sl.row }}; border-top: 1px {{ sl.lineStyle }} {{ sl.lineColor }}"></div>
+                    </sc-for>
+                    <sc-for list="{{ d.shifts }}" as="s">
+                      <button type="button" onClick="{{ s.open }}" aria-label="{{ s.aria }}" title="{{ s.aria }}" style="grid-column: 1 / -1; min-width: 0; overflow: hidden; display: flex; flex-direction: column; align-items: stretch; gap: 4px; padding: 6px 7px; text-align: left; border-radius: 8px; cursor: pointer; font-size: 12px; grid-row: {{ s.row }}; margin: 2px 2px 2px {{ s.ml }}; z-index: {{ s.z }}; box-shadow: {{ s.shadow }}; background: {{ s.bg }}; border: 1.5px {{ s.bstyle }} {{ s.border }}; color: {{ s.fg }}; opacity: {{ s.op }}; pointer-events: {{ blockPE }}">
+                        <sc-if value="{{ s.compact }}" hint-placeholder-val="{{ false }}">
+                          <span style="font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ s.title }} · <span style="font-weight: 600; font-variant-numeric: tabular-nums">{{ s.time }}</span></span>
+                        </sc-if>
+                        <sc-if value="{{ s.full }}" hint-placeholder-val="{{ true }}">
+                          <span style="font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ s.title }}</span>
+                          <span style="font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap">{{ s.time }}</span>
+                          <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 800; white-space: nowrap">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                            {{ s.fill }}
+                          </span>
+                          <span style="display: flex; flex-wrap: wrap; gap: 4px; padding: 2px 3px 3px 0">
+                            <sc-for list="{{ s.avatars }}" as="p">
+                              <span title="{{ p.title }}" style="position: relative; width: 24px; height: 24px; border-radius: 999px; background: #FFFFFF; color: #161B24; font-size: 9.5px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; border: 1.5px {{ p.bstyle }} {{ p.bcolor }}">
+                                {{ p.ini }}
+                                <span style="position: absolute; right: -3px; bottom: -3px; width: 12px; height: 12px; border-radius: 999px; border: 1px solid #1E3A66; display: inline-flex; align-items: center; justify-content: center; background: {{ p.badgeBg }}; color: {{ p.badgeFg }}">
+                                  <sc-if value="{{ p.ok }}" hint-placeholder-val="{{ true }}"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 4; stroke-linecap: round; stroke-linejoin: round"><path d="M20 6L9 17l-5-5"></path></svg></sc-if>
+                                  <sc-if value="{{ p.req }}" hint-placeholder-val="{{ false }}"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></sc-if>
+                                </span>
+                              </span>
+                            </sc-for>
+                            <sc-if value="{{ s.hasMore }}" hint-placeholder-val="{{ false }}"><span style="height: 24px; padding: 0 4px; font-size: 10.5px; font-weight: 800; display: inline-flex; align-items: center">{{ s.moreLabel }}</span></sc-if>
+                          </span>
+                          <span style="display: flex; flex-wrap: wrap; gap: 3px">
+                            <sc-if value="{{ s.showOpen }}" hint-placeholder-val="{{ false }}"><span style="padding: 1px 6px; border-radius: 999px; border: 1px dashed #4A5361; background: #FFFFFF; color: #2C3442; font-size: 10px; font-weight: 800; white-space: nowrap">Offen · {{ s.freeLabel }}</span></sc-if>
+                            <sc-if value="{{ s.showReq }}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; align-items: center; gap: 3px; padding: 1px 6px; border-radius: 999px; border: 1px solid #1E3A66; background: #FFFFFF; color: #1E3A66; font-size: 10px; font-weight: 800; white-space: nowrap"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 3; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>{{ s.reqLabel }}</span></sc-if>
+                            <sc-if value="{{ s.showFull }}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; align-items: center; gap: 3px; padding: 1px 6px; border-radius: 999px; background: #1E3A66; color: #FFFFFF; font-size: 10px; font-weight: 800; white-space: nowrap"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round"><path d="M20 6L9 17l-5-5"></path></svg>Besetzt</span></sc-if>
+                          </span>
+                        </sc-if>
+                      </button>
+                    </sc-for>
+                    <sc-if value="{{ d.hasDrag }}" hint-placeholder-val="{{ false }}">
+                      <div style="grid-column: 1 / -1; margin: 2px; z-index: 30; pointer-events: none; border: 2px dashed #1E3A66; background: rgba(30,58,102,0.12); border-radius: 8px; padding: 6px; display: flex; flex-direction: column; gap: 2px; color: #1E3A66; font-size: 12px; font-weight: 800; grid-row: {{ d.dragRow }}">
+                        <span>Neue Schicht</span>
+                        <span style="font-variant-numeric: tabular-nums">{{ d.dragLabel }}</span>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ d.today }}" hint-placeholder-val="{{ false }}">
+                      <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 430px; height: 2px; background: #C4320A; z-index: 40; pointer-events: none"><span style="position: absolute; left: -5px; top: -4px; width: 10px; height: 10px; border-radius: 999px; background: #C4320A"></span></div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding: 12px 16px; border-top: 1px solid #DCE1E8; font-size: 12px; color: #4A5361">
+            <span style="font-weight: 800; color: #161B24">Vorlagen</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 14px; height: 14px; border-radius: 4px; background: #FFF3C4; border: 1.5px solid #C9A227"></span>Frühschicht 07–13</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 14px; height: 14px; border-radius: 4px; background: #DDF2E4; border: 1.5px solid #4E9E6B"></span>Spätschicht 12–20</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 14px; height: 14px; border-radius: 4px; background: #E6EAF1; border: 1.5px solid #7D8BA1"></span>Manuell</span>
+            <span aria-hidden="true" style="width: 1px; height: 16px; background: #DCE1E8"></span>
+            <span style="font-weight: 800; color: #161B24">Status</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 1px 6px; border-radius: 999px; border: 1px dashed #4A5361; background: #FFFFFF; color: #2C3442; font-size: 10px; font-weight: 800">Offen</span>freie Plätze</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 18px; height: 18px; border-radius: 999px; border: 1.5px dashed #5E6775; background: #FFFFFF"></span>Angefragt</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 18px; height: 18px; border-radius: 999px; border: 1.5px solid #1E3A66; background: #FFFFFF"></span>Bestätigt</span>
+          </div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ isMonth }}" hint-placeholder-val="{{ false }}">
+        <section aria-label="{{ month.label }}" style="background: #FFFFFF; border: 1px solid #DCE1E8; border-radius: 16px; overflow: hidden">
+          <div style="overflow-x: auto">
+            <div style="min-width: 980px">
+              <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-bottom: 1px solid #DCE1E8; background: #FAFBFC">
+                <sc-for list="{{ month.heads }}" as="h" hint-placeholder-count="7">
+                  <div style="padding: 10px 12px; font-weight: 800; border-left: 1px solid #E6E9EE">{{ h.label }}</div>
+                </sc-for>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr))">
+                <sc-for list="{{ month.cells }}" as="c" hint-placeholder-count="35">
+                  <sc-if value="{{ c.inMonth }}" hint-placeholder-val="{{ true }}">
+                    <button type="button" onClick="{{ c.open }}" aria-label="{{ c.aria }}" style="min-height: 128px; min-width: 0; display: flex; flex-direction: column; align-items: stretch; gap: 4px; padding: 8px; text-align: left; border: 0; border-left: 1px solid #E6E9EE; border-bottom: 1px solid #E6E9EE; cursor: pointer; font-size: 12px; color: #161B24; background: {{ c.bg }}">
+                      <span style="display: flex; align-items: center; justify-content: space-between; gap: 6px">
+                        <span style="min-width: 26px; height: 26px; padding: 0 6px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; font-variant-numeric: tabular-nums; background: {{ c.numBg }}; color: {{ c.numFg }}">{{ c.num }}</span>
+                        <sc-if value="{{ c.hasReq }}" hint-placeholder-val="{{ false }}">
+                          <span title="{{ c.reqTitle }}" style="display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 800; color: #1E3A66">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+                            {{ c.reqN }}
+                          </span>
+                        </sc-if>
+                      </span>
+                      <sc-for list="{{ c.items }}" as="it">
+                        <span title="{{ it.tip }}" style="display: flex; align-items: center; gap: 6px; padding: 3px 7px; border-radius: 6px; font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; background: {{ it.bg }}; border: 1px {{ it.bstyle }} {{ it.border }}; color: {{ it.fg }}; opacity: {{ it.op }}">
+                          <span style="overflow: hidden; text-overflow: ellipsis">{{ it.label }}</span>
+                          <span style="margin-left: auto; font-variant-numeric: tabular-nums">{{ it.fill }}</span>
+                        </span>
+                      </sc-for>
+                    </button>
+                  </sc-if>
+                  <sc-if value="{{ c.outMonth }}" hint-placeholder-val="{{ false }}">
+                    <div aria-hidden="true" style="min-height: 128px; padding: 12px 14px; border-left: 1px solid #E6E9EE; border-bottom: 1px solid #E6E9EE; background: #F5F6F8; color: #6B7381; font-weight: 700; font-size: 13px">{{ c.num }}</div>
+                  </sc-if>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding: 12px 16px; border-top: 1px solid #DCE1E8; font-size: 12px; color: #4A5361">
+            <span style="font-weight: 800; color: #161B24">Vorlagen</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 14px; height: 14px; border-radius: 4px; background: #FFF3C4; border: 1.5px solid #C9A227"></span>Frühschicht</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 14px; height: 14px; border-radius: 4px; background: #DDF2E4; border: 1.5px solid #4E9E6B"></span>Spätschicht</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 14px; height: 14px; border-radius: 4px; background: #E6EAF1; border: 1.5px solid #7D8BA1"></span>Manuell</span>
+            <span aria-hidden="true" style="width: 1px; height: 16px; background: #DCE1E8"></span>
+            <span style="font-weight: 800; color: #161B24">Status</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px"><span style="padding: 1px 6px; border-radius: 999px; border: 1px dashed #4A5361; background: #FFFFFF; color: #2C3442; font-size: 10px; font-weight: 800">1/2</span>freie Plätze</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px; color: #1E3A66; font-weight: 700"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg><span style="color: #4A5361; font-weight: 500">offene Anfragen</span></span>
+          </div>
+        </section>
+      </sc-if>
+    </main>
+  </div>
+
+  <sc-if value="{{ showForm }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 50; background: rgba(22,27,36,0.45); display: flex; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto">
+      <div role="dialog" aria-modal="true" aria-labelledby="dlg-form-title" style="width: 100%; max-width: 620px; background: #FFFFFF; border-radius: 20px; box-shadow: 0 24px 56px rgba(16,24,40,0.28); display: flex; flex-direction: column">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 20px 24px 4px">
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <h2 id="dlg-form-title" style="margin: 0; font-size: 20px; font-weight: 800">{{ form.title }}</h2>
+            <p style="margin: 0; color: #4A5361">{{ form.sub }}</p>
+          </div>
+          <button type="button" aria-label="Schließen" onClick="{{ close }}" class="sf-ghost" style="width: 40px; height: 40px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; border: 0; background: transparent; border-radius: 10px; color: #2C3442; cursor: pointer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <div style="padding: 14px 24px 20px; display: flex; flex-direction: column; gap: 20px">
+          <sc-if value="{{ form.showKinds }}" hint-placeholder-val="{{ true }}">
+          <fieldset style="border: 0; margin: 0; padding: 0; min-width: 0">
+            <legend style="padding: 0; margin-bottom: 10px; font-size: 13px; font-weight: 700; color: #2C3442">Art der Schicht</legend>
+            <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+              <sc-for list="{{ form.kinds }}" as="o" hint-placeholder-count="3">
+                <button type="button" role="radio" aria-checked="{{ o.checked }}" onClick="{{ o.pick }}" style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px; text-align: left; border-radius: 12px; background: #FFFFFF; cursor: pointer; min-width: 0; border: {{ o.ringW }} solid {{ o.ring }}">
+                  <span aria-hidden="true" style="width: 32px; height: 32px; flex-shrink: 0; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #27334A; background: {{ o.bg }}; border: 1.5px solid {{ o.border }}">
+                    <sc-if value="{{ o.isManual }}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path></svg></sc-if>
+                  </span>
+                  <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-weight: 800; color: #161B24">{{ o.name }}</span><span style="font-size: 12.5px; color: #4A5361; font-variant-numeric: tabular-nums">{{ o.sub }}</span></span>
+                </button>
+              </sc-for>
+            </div>
+            <p style="margin: 10px 0 0; font-size: 12.5px; color: #4A5361">{{ form.kindHint }}</p>
+          </fieldset>
+          </sc-if>
+
+          <sc-if value="{{ form.showName }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="form-name" style="font-size: 13px; font-weight: 700; color: #2C3442">Name der Schicht</label>
+              <input id="form-name" type="text" placeholder="z. B. Vorarbeit Produktion" value="{{ form.nameValue }}" onChange="{{ form.setName }}" style="height: 46px; padding: 0 12px; border: 1px solid #B9C1CD; border-radius: 10px; background: #FFFFFF; font-size: 15px; color: #161B24">
+            </div>
+          </sc-if>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 16px">
+            <sc-if value="{{ form.showDay }}" hint-placeholder-val="{{ true }}">
+            <div style="flex: 1 1 190px; display: flex; flex-direction: column; gap: 6px">
+              <label for="form-day" style="font-size: 13px; font-weight: 700; color: #2C3442">Datum</label>
+              <select id="form-day" value="{{ form.dayValue }}" onChange="{{ form.setDay }}" style="height: 46px; padding: 0 12px; border: 1px solid #B9C1CD; border-radius: 10px; background: #FFFFFF; font-size: 15px; color: #161B24">
+                <option value="0">Mo, 19.10.2026</option>
+                <option value="1">Di, 20.10.2026</option>
+                <option value="2">Mi, 21.10.2026</option>
+                <option value="3">Do, 22.10.2026</option>
+                <option value="4">Fr, 23.10.2026</option>
+                <option value="5">Sa, 24.10.2026</option>
+                <option value="6">So, 25.10.2026</option>
+              </select>
+            </div>
+            </sc-if>
+            <sc-if value="{{ form.showTimes }}" hint-placeholder-val="{{ false }}">
+              <div style="flex: 1 1 110px; display: flex; flex-direction: column; gap: 6px">
+                <label for="form-start" style="font-size: 13px; font-weight: 700; color: #2C3442">Von</label>
+                <input id="form-start" type="time" step="900" value="{{ form.startValue }}" onChange="{{ form.setStart }}" style="height: 46px; padding: 0 12px; border: 1px solid #B9C1CD; border-radius: 10px; background: #FFFFFF; font-size: 15px; color: #161B24">
+              </div>
+              <div style="flex: 1 1 110px; display: flex; flex-direction: column; gap: 6px">
+                <label for="form-end" style="font-size: 13px; font-weight: 700; color: #2C3442">Bis</label>
+                <input id="form-end" type="time" step="900" value="{{ form.endValue }}" onChange="{{ form.setEnd }}" style="height: 46px; padding: 0 12px; border: 1px solid #B9C1CD; border-radius: 10px; background: #FFFFFF; font-size: 15px; color: #161B24">
+              </div>
+            </sc-if>
+            <div style="flex: 1 1 160px; display: flex; flex-direction: column; gap: 6px">
+              <label for="form-needed" style="font-size: 13px; font-weight: 700; color: #2C3442">Benötigte Personen</label>
+              <input id="form-needed" type="number" min="1" placeholder="unbegrenzt" value="{{ form.neededValue }}" onChange="{{ form.setNeeded }}" style="height: 46px; padding: 0 12px; border: 1px solid #B9C1CD; border-radius: 10px; background: #FFFFFF; font-size: 15px; color: #161B24">
+              <span style="font-size: 12px; color: #5E6775">Leer lassen = unbegrenzt</span>
+            </div>
+          </div>
+          <sc-if value="{{ form.overnight }}" hint-placeholder-val="{{ false }}">
+            <p style="margin: -8px 0 0; font-size: 13px; font-weight: 700; color: #1E3A66">{{ form.overnightText }}</p>
+          </sc-if>
+          <sc-if value="{{ form.neededWarn }}" hint-placeholder-val="{{ false }}">
+            <p role="status" style="margin: -8px 0 0; padding: 10px 12px; border-radius: 10px; background: #FFF4E5; color: #6B3E00; font-size: 13px; font-weight: 600">{{ form.neededWarnText }}</p>
+          </sc-if>
+          <sc-if value="{{ form.hasInform }}" hint-placeholder-val="{{ false }}">
+            <p style="margin: -8px 0 0; font-size: 13px; color: #4A5361">{{ form.informText }}</p>
+          </sc-if>
+
+          <sc-if value="{{ form.showRepeat }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-direction: column; gap: 14px; padding: 16px; border-radius: 14px; background: #F4F6F9">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+                <span style="display: flex; align-items: center; gap: 10px">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; color: #1E3A66; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M17 2l4 4-4 4"></path><path d="M3 11v-1a4 4 0 0 1 4-4h14"></path><path d="M7 22l-4-4 4-4"></path><path d="M21 13v1a4 4 0 0 1-4 4H3"></path></svg>
+                  <span style="display: flex; flex-direction: column"><span id="form-rep-label" style="font-weight: 700">Wöchentlich wiederholen</span><span style="font-size: 12.5px; color: #4A5361">Bis Ende dieses oder nächsten Monats</span></span>
+                </span>
+                <button type="button" role="switch" aria-checked="{{ form.repeatChecked }}" aria-labelledby="form-rep-label" onClick="{{ form.toggleRepeat }}" style="position: relative; flex-shrink: 0; width: 46px; height: 26px; padding: 0; border: 0; border-radius: 999px; cursor: pointer; background: {{ form.repeatBg }}">
+                  <span style="position: absolute; top: 3px; width: 20px; height: 20px; border-radius: 999px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.25); left: {{ form.knobX }}"></span>
+                </button>
+              </div>
+              <sc-if value="{{ form.repeatOn }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; flex-direction: column; gap: 8px">
+                  <span style="font-size: 13px; font-weight: 700; color: #2C3442">An diesen Wochentagen</span>
+                  <div role="group" aria-label="Wochentage" style="display: flex; flex-wrap: wrap; gap: 6px">
+                    <sc-for list="{{ form.weekdays }}" as="w" hint-placeholder-count="7">
+                      <button type="button" aria-pressed="{{ w.pressed }}" onClick="{{ w.toggle }}" style="width: 46px; height: 40px; border-radius: 10px; font-weight: 700; cursor: pointer; border: 1px solid {{ w.border }}; background: {{ w.bg }}; color: {{ w.fg }}">{{ w.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px">
+                  <span style="font-size: 13px; font-weight: 700; color: #2C3442">Wiederholen bis</span>
+                  <div role="group" aria-label="Wiederholen bis" style="display: flex; flex-wrap: wrap; gap: 8px">
+                    <sc-for list="{{ form.untils }}" as="u" hint-placeholder-count="2">
+                      <button type="button" aria-pressed="{{ u.pressed }}" onClick="{{ u.pick }}" style="flex: 1 1 160px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 14px; border-radius: 10px; text-align: left; cursor: pointer; border: 1px solid {{ u.border }}; background: {{ u.bg }}; color: {{ u.fg }}">
+                        <span style="font-weight: 800">{{ u.label }}</span>
+                        <span style="font-size: 12.5px; font-variant-numeric: tabular-nums">{{ u.sub }}</span>
+                      </button>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+              <p style="margin: 0; font-size: 13px; font-weight: 700; color: #1E3A66">{{ form.summary }}</p>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ form.showAssign }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 13px; font-weight: 700; color: #2C3442">Direkt zuteilen <span style="font-weight: 500; color: #5E6775">(optional · sofort bestätigt)</span></span>
+            <div role="group" aria-label="Mitarbeiter direkt zuteilen" style="display: flex; flex-wrap: wrap; gap: 8px">
+              <sc-for list="{{ form.assign }}" as="c" hint-placeholder-count="7">
+                <button type="button" aria-pressed="{{ c.pressed }}" onClick="{{ c.toggle }}" style="height: 36px; padding: 0 12px 0 4px; display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; font-weight: 600; font-size: 13px; cursor: pointer; border: 1px solid {{ c.border }}; background: {{ c.bg }}; color: {{ c.fg }}">
+                  <span style="width: 28px; height: 28px; border-radius: 999px; background: #FFFFFF; border: 1px solid #DCE1E8; font-size: 10.5px; font-weight: 800; color: #1E3A66; display: inline-flex; align-items: center; justify-content: center">{{ c.ini }}</span>
+                  {{ c.label }}
+                  <sc-if value="{{ c.showCheck }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 3; stroke-linecap: round; stroke-linejoin: round"><path d="M20 6L9 17l-5-5"></path></svg></sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ form.hasPause }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 12px; background: #EEF3FA; color: #1E3A66; font-size: 13px; font-weight: 600">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="12" r="9"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+              <span>Anspruch auf 30 Minuten Pause · Zeitpunkt flexibel</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ form.hasError }}" hint-placeholder-val="{{ false }}">
+            <p role="alert" style="margin: 0; padding: 10px 14px; border-radius: 10px; background: #FDECEA; color: #8A1C12; font-weight: 700; font-size: 13px">{{ form.error }}</p>
+          </sc-if>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; padding: 16px 24px; border-top: 1px solid #E6E9EE">
+          <button type="button" onClick="{{ close }}" class="sf-ghost" style="height: 42px; padding: 0 18px; border: 1px solid #C9D0DA; border-radius: 10px; background: #FFFFFF; color: #2C3442; font-weight: 700; cursor: pointer">Abbrechen</button>
+          <button type="button" onClick="{{ form.save }}" disabled="{{ form.cannotSave }}" class="sf-primary" style="height: 42px; padding: 0 18px; border: 0; border-radius: 10px; background: #1E3A66; color: #FFFFFF; font-weight: 700; cursor: pointer; opacity: {{ form.saveOp }}">{{ form.saveLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showDet }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 50; background: rgba(22,27,36,0.45); display: flex; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto">
+      <div role="dialog" aria-modal="true" aria-labelledby="dlg-det-title" style="width: 100%; max-width: 600px; background: #FFFFFF; border-radius: 20px; box-shadow: 0 24px 56px rgba(16,24,40,0.28); display: flex; flex-direction: column; overflow: hidden">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 20px 24px; background: {{ det.bg }}; color: {{ det.fg }}; border-bottom: 1.5px solid {{ det.border }}">
+          <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+            <span style="align-self: flex-start; padding: 2px 10px; border-radius: 999px; background: #FFFFFF; font-size: 12px; font-weight: 800">{{ det.kindLabel }}</span>
+            <h2 id="dlg-det-title" style="margin: 0; font-size: 22px; font-weight: 800">{{ det.title }}</h2>
+            <span style="font-weight: 600; font-variant-numeric: tabular-nums">{{ det.dateLine }}</span>
+          </div>
+          <button type="button" aria-label="Schließen" onClick="{{ close }}" style="width: 40px; height: 40px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; border: 0; background: #FFFFFF; border-radius: 10px; color: #2C3442; cursor: pointer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <div style="padding: 20px 24px; display: flex; flex-direction: column; gap: 20px">
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+              <span style="font-size: 13px; font-weight: 700; color: #2C3442">Besetzung</span>
+              <span style="font-weight: 800; font-variant-numeric: tabular-nums">{{ det.fill }}</span>
+            </div>
+            <sc-if value="{{ det.hasBar }}" hint-placeholder-val="{{ true }}">
+              <span aria-hidden="true" style="display: block; height: 8px; border-radius: 999px; background: #E6E9EE; overflow: hidden"><span style="display: block; height: 8px; border-radius: 999px; background: #1E3A66; width: {{ det.barPct }}"></span></span>
+            </sc-if>
+            <sc-if value="{{ det.over }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size: 12.5px; color: #4A5361">Mehr Personen zugeteilt als benötigt.</span>
+            </sc-if>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; font-weight: 700; color: #2C3442; padding-bottom: 4px">Bestätigt ({{ det.okN }})</span>
+            <sc-for list="{{ det.confirmed }}" as="p" hint-placeholder-count="1">
+              <div style="display: flex; align-items: center; gap: 12px; padding: 8px 0; border-top: 1px solid #EEF1F4">
+                <span style="width: 34px; height: 34px; flex-shrink: 0; border-radius: 999px; background: #FFFFFF; border: 1.5px solid #1E3A66; color: #1E3A66; font-size: 11.5px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center">{{ p.ini }}</span>
+                <span style="flex: 1; font-weight: 700">{{ p.name }}</span>
+                <button type="button" onClick="{{ p.remove }}" class="sf-ghost" style="height: 34px; padding: 0 12px; border: 0; border-radius: 8px; background: transparent; color: #8A1C12; font-weight: 700; cursor: pointer">Entfernen</button>
+              </div>
+            </sc-for>
+            <sc-if value="{{ det.noOk }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 10px 0; border-top: 1px solid #EEF1F4; color: #4A5361">Noch niemand bestätigt.</p></sc-if>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; font-weight: 700; color: #2C3442; padding-bottom: 4px">Anfragen ({{ det.reqN }})</span>
+            <sc-for list="{{ det.reqs }}" as="p" hint-placeholder-count="1">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 8px 0; border-top: 1px solid #EEF1F4">
+                <span style="width: 34px; height: 34px; flex-shrink: 0; border-radius: 999px; background: #FFFFFF; border: 1.5px dashed #5E6775; color: #1E3A66; font-size: 11.5px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center">{{ p.ini }}</span>
+                <span style="flex: 1 1 140px; display: flex; flex-direction: column"><span style="font-weight: 700">{{ p.name }}</span><span style="font-size: 12.5px; color: #4A5361">hat sich angefragt</span></span>
+                <span style="display: inline-flex; gap: 8px">
+                  <button type="button" onClick="{{ p.reject }}" class="sf-ghost" style="height: 36px; padding: 0 14px; border: 1px solid #C9D0DA; border-radius: 10px; background: #FFFFFF; color: #2C3442; font-weight: 700; cursor: pointer">Ablehnen</button>
+                  <button type="button" onClick="{{ p.confirm }}" class="sf-primary" style="height: 36px; padding: 0 14px; display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 10px; background: #1E3A66; color: #FFFFFF; font-weight: 700; cursor: pointer">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M20 6L9 17l-5-5"></path></svg>
+                    Bestätigen
+                  </button>
+                </span>
+              </div>
+            </sc-for>
+            <sc-if value="{{ det.noReq }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 10px 0; border-top: 1px solid #EEF1F4; color: #4A5361">Keine offenen Anfragen.</p></sc-if>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <span style="font-size: 13px; font-weight: 700; color: #2C3442">Direkt zuteilen</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+              <sc-if value="{{ det.showMe }}" hint-placeholder-val="{{ true }}">
+                <button type="button" onClick="{{ det.assignMe }}" class="sf-primary" style="height: 36px; padding: 0 14px 0 4px; display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 999px; background: #1E3A66; color: #FFFFFF; font-weight: 700; font-size: 13px; cursor: pointer">
+                  <span style="width: 28px; height: 28px; border-radius: 999px; background: #FFFFFF; color: #1E3A66; font-size: 10.5px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center">MH</span>
+                  Mich eintragen
+                </button>
+              </sc-if>
+              <sc-for list="{{ det.others }}" as="o" hint-placeholder-count="4">
+                <button type="button" onClick="{{ o.assign }}" class="sf-ghost" style="height: 36px; padding: 0 12px 0 4px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid #C9D0DA; border-radius: 999px; background: #FFFFFF; color: #2C3442; font-weight: 600; font-size: 13px; cursor: pointer">
+                  <span style="width: 28px; height: 28px; border-radius: 999px; background: #F3F5F8; color: #1E3A66; font-size: 10.5px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center">{{ o.ini }}</span>
+                  {{ o.label }}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M12 5v14M5 12h14"></path></svg>
+                </button>
+              </sc-for>
+            </div>
+            <sc-if value="{{ det.isFull }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size: 12.5px; color: #4A5361">Die Schicht ist voll. Mitarbeiter können nicht mehr anfragen, du kannst aber trotzdem zuteilen.</span>
+            </sc-if>
+          </div>
+
+          <sc-if value="{{ det.hasPause }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 12px; background: #EEF3FA; color: #1E3A66; font-size: 13px; font-weight: 600">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="flex-shrink: 0; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="12" r="9"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+              <span>Anspruch auf 30 Minuten Pause · Zeitpunkt flexibel</span>
+            </div>
+          </sc-if>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 24px; border-top: 1px solid #E6E9EE">
+          <button type="button" onClick="{{ det.del }}" class="sf-ghost" style="height: 42px; padding: 0 14px; display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 10px; background: transparent; color: #8A1C12; font-weight: 700; cursor: pointer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"></path></svg>
+            Schicht löschen
+          </button>
+          <span style="display: inline-flex; gap: 10px">
+            <button type="button" onClick="{{ close }}" class="sf-primary" style="height: 42px; padding: 0 18px; border: 0; border-radius: 10px; background: #1E3A66; color: #FFFFFF; font-weight: 700; cursor: pointer">Fertig</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showDelCfm }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 55; background: rgba(22,27,36,0.45); display: flex; align-items: flex-start; justify-content: center; padding: 120px 16px; overflow-y: auto">
+      <div role="alertdialog" aria-modal="true" aria-labelledby="showDelCfm-title" aria-describedby="showDelCfm-text" style="width: 100%; max-width: 460px; background: #FFFFFF; border-radius: 20px; box-shadow: 0 24px 56px rgba(16,24,40,0.28); display: flex; flex-direction: column">
+        <div style="padding: 22px 24px 14px; display: flex; flex-direction: column; gap: 8px">
+          <h2 id="showDelCfm-title" style="margin: 0; font-size: 19px; font-weight: 800">Schicht löschen?</h2>
+          <p id="showDelCfm-text" style="margin: 0; color: #4A5361; line-height: 1.55">{{ delCfm.text }}</p>
+        </div>
+        <div style="margin: 0 24px; display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 12px; background: {{ delCfm.bg }}; border: 1.5px solid {{ delCfm.border }}; color: {{ delCfm.fg }}">
+          <span style="font-weight: 800">{{ delCfm.title }}</span>
+          <span style="font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums">{{ delCfm.sub }}</span>
+        </div>
+        <sc-if value="{{ delCfm.isSeries }}" hint-placeholder-val="{{ false }}">
+          <div style="margin: 12px 24px -4px"></div>
+          <div role="radiogroup" aria-label="Welche Schichten löschen?" style="margin: 12px 24px 0; display: flex; flex-direction: column; gap: 8px">
+            <sc-for list="{{ delCfm.scopes }}" as="o" hint-placeholder-count="2">
+              <button type="button" role="radio" aria-checked="{{ o.checked }}" onClick="{{ o.pick }}" style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 12px; background: #FFFFFF; text-align: left; cursor: pointer; color: #161B24; border: {{ o.ringW }} solid {{ o.ring }}">
+                <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 800">{{ o.label }}</span><span style="font-size: 12.5px; color: #4A5361">{{ o.sub }}</span></span>
+                <span aria-hidden="true" style="width: 20px; height: 20px; flex-shrink: 0; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; border: 2px solid {{ o.dotRing }}"><sc-if value="{{ o.on }}" hint-placeholder-val="{{ false }}"><span style="width: 9px; height: 9px; border-radius: 999px; background: #1E3A66"></span></sc-if></span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ delCfm.hasBooked }}" hint-placeholder-val="{{ false }}">
+          <p style="margin: 12px 24px 0; padding: 10px 12px; border-radius: 10px; background: #FFF4E5; color: #6B3E00; font-size: 13px; font-weight: 600">{{ delCfm.booked }}</p>
+        </sc-if>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; padding: 16px 24px 20px">
+          <button type="button" onClick="{{ delCfm.cancel }}" class="sf-ghost" style="height: 42px; padding: 0 18px; border: 1px solid #C9D0DA; border-radius: 10px; background: #FFFFFF; color: #2C3442; font-weight: 700; cursor: pointer">Abbrechen</button>
+          <button type="button" onClick="{{ delCfm.ok }}" style="height: 42px; padding: 0 18px; border: 0; border-radius: 10px; background: #8A1C12; color: #FFFFFF; font-weight: 700; cursor: pointer">{{ delCfm.okLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 60; background: #161B24; color: #FFFFFF; padding: 12px 18px; border-radius: 12px; font-weight: 600; box-shadow: 0 12px 32px rgba(16,24,40,0.24)">{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1320}}'>
+var DAYS = [
+  { short: 'Mo', date: '19.10.', long: 'Montag, 19.10.2026', iso: '2026-10-19' },
+  { short: 'Di', date: '20.10.', long: 'Dienstag, 20.10.2026', iso: '2026-10-20' },
+  { short: 'Mi', date: '21.10.', long: 'Mittwoch, 21.10.2026', iso: '2026-10-21' },
+  { short: 'Do', date: '22.10.', long: 'Donnerstag, 22.10.2026', iso: '2026-10-22' },
+  { short: 'Fr', date: '23.10.', long: 'Freitag, 23.10.2026', iso: '2026-10-23' },
+  { short: 'Sa', date: '24.10.', long: 'Samstag, 24.10.2026', iso: '2026-10-24' },
+  { short: 'So', date: '25.10.', long: 'Sonntag, 25.10.2026', iso: '2026-10-25' }
+];
+var PEOPLE = {
+  me: { name: 'Maria H.', ini: 'MH' }, anna: { name: 'Anna K.', ini: 'AK' }, ben: { name: 'Ben M.', ini: 'BM' },
+  clara: { name: 'Clara S.', ini: 'CS' }, david: { name: 'David R.', ini: 'DR' }, elif: { name: 'Elif T.', ini: 'ET' }, felix: { name: 'Felix W.', ini: 'FW' }
+};
+var PEOPLE_ORDER = ['me', 'anna', 'ben', 'clara', 'david', 'elif', 'felix'];
+var KINDS = {
+  frueh: { label: 'Frühschicht', bg: '#FFF3C4', border: '#C9A227', text: '#4A3900' },
+  spaet: { label: 'Spätschicht', bg: '#DDF2E4', border: '#4E9E6B', text: '#16452A' },
+  manual: { label: 'Manuelle Schicht', bg: '#E6EAF1', border: '#7D8BA1', text: '#27334A' }
+};
+var TEMPLATES = [
+  { id: 'frueh', name: 'Frühschicht', start: 420, end: 780 },
+  { id: 'spaet', name: 'Spätschicht', start: 720, end: 1200 }
+];
+var UNTILS = [
+  { label: 'Ende Oktober', sub: 'bis 31.10.2026', val: '2026-10-31', short: '31.10.' },
+  { label: 'Ende November', sub: 'bis 30.11.2026', val: '2026-11-30', short: '30.11.' }
+];
+var DAY_START = 300, SLOT = 30, SLOTS = 34;
+var MONTHS = [{ m: 9, label: 'Oktober 2026', name: 'Oktober', days: 31 }, { m: 10, label: 'November 2026', name: 'November', days: 30 }];
+var WDL = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+var ME_PAT = { 0: 'spaet', 2: 'frueh', 5: 'spaet' };
+function baseDay(m, d) {
+  var wd = (new Date(2026, m, d).getDay() + 6) % 7;
+  var past = m === 9 && d < 19;
+  return [['frueh', 420, 780], ['spaet', 720, 1200]].map(function (t, i) {
+    var ok, req, mine = ME_PAT[wd] === t[0];
+    if (past) { ok = 2; req = 0; }
+    else { var h = (m * 31 + d * 7 + i * 3) % 6; ok = [2, 1, 2, 0, 2, 1][h]; req = (ok < 2 && (d + i) % 2 === 0) ? 1 : 0; }
+    if (mine && ok < 1) ok = 1;
+    return { kind: t[0], name: KINDS[t[0]].label, needed: 2, ok: ok, req: req, mine: mine, past: past };
+  });
+}
+function buildMonth(self, st) {
+  var mo = MONTHS[st.monthIdx];
+  var lead = (new Date(2026, mo.m, 1).getDay() + 6) % 7;
+  var cells = [];
+  for (var i = 0; i < lead; i++) cells.push({ inMonth: false, outMonth: true, num: String(new Date(2026, mo.m, 1 - lead + i).getDate()), items: [] });
+  for (var d = 1; d <= mo.days; d++) {
+    (function (d) {
+      var inKW43 = mo.m === 9 && d >= 19 && d <= 25;
+      var list = inKW43
+        ? st.shifts.filter(function (s) { return s.day === d - 19; }).sort(function (a, b) { return a.start - b.start; }).map(function (s) {
+            return { kind: s.kind, name: s.name, needed: s.needed, ok: okCount(s), req: reqCount(s), mine: s.people.some(function (p) { return p.id === 'me'; }), past: d === 19 && s.end <= 897 };
+          })
+        : baseDay(mo.m, d);
+      var reqN = 0;
+      var items = list.map(function (x) {
+        reqN += x.req;
+        var k = KINDS[x.kind], under = x.needed == null ? x.ok === 0 : x.ok < x.needed;
+        var match = st.filter === 'mine' ? x.mine : st.filter === 'under' ? under : st.filter === 'req' ? x.req > 0 : true;
+        return {
+          label: x.kind === 'frueh' ? 'Früh' : x.kind === 'spaet' ? 'Spät' : x.name,
+          fill: x.needed == null ? x.ok + ' · ∞' : x.ok + '/' + x.needed,
+          bg: k.bg, border: k.border, fg: k.text, bstyle: under ? 'dashed' : 'solid',
+          op: match ? (x.past ? '0.65' : '1') : '0.2',
+          tip: x.name + ' · ' + (x.needed == null ? x.ok + ' bestätigt' : x.ok + ' von ' + x.needed + ' besetzt') + (x.req ? ' · ' + x.req + (x.req === 1 ? ' Anfrage' : ' Anfragen') : '') + (x.mine ? ' · du bist eingetragen' : '')
+        };
+      });
+      var wd = (new Date(2026, mo.m, d).getDay() + 6) % 7;
+      var isToday = mo.m === 9 && d === 19, pastDay = mo.m === 9 && d < 19;
+      cells.push({
+        inMonth: true, outMonth: false, num: String(d), items: items,
+        hasReq: reqN > 0, reqN: reqN, reqTitle: reqN + (reqN === 1 ? ' offene Anfrage' : ' offene Anfragen'),
+        bg: pastDay ? '#FAFBFC' : '#FFFFFF',
+        numBg: isToday ? '#1E3A66' : 'transparent', numFg: isToday ? '#FFFFFF' : (pastDay ? '#5E6775' : '#161B24'),
+        aria: WDL[wd] + ', ' + d + '. ' + mo.name + ': Woche öffnen',
+        open: function () {
+          if (inKW43) self.setState({ view: 'week' });
+          else self.showToast('Im Wireframe ist nur KW 43 als Woche befüllt');
+        }
+      });
+    })(d);
+  }
+  while (cells.length % 7) cells.push({ inMonth: false, outMonth: true, num: String(cells.length - lead - mo.days + 1), items: [] });
+  return { label: 'Monatskalender ' + mo.label, heads: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].map(function (l) { return { label: l }; }), cells: cells };
+}
+function periodVals(self, st) {
+  var isWeek = st.view === 'week';
+  return {
+    periodLabel: isWeek ? 'KW 43 · 19.–25. Oktober 2026' : MONTHS[st.monthIdx].label,
+    prevLabel: isWeek ? 'Vorherige Woche' : 'Vorheriger Monat',
+    nextLabel: isWeek ? 'Nächste Woche' : 'Nächster Monat',
+    prevP: function () {
+      if (isWeek) self.showToast('Im Wireframe ist nur KW 43 als Woche befüllt');
+      else if (st.monthIdx > 0) self.setState({ monthIdx: st.monthIdx - 1 });
+      else self.showToast('Im Wireframe sind nur Oktober und November befüllt');
+    },
+    nextP: function () {
+      if (isWeek) self.showToast('Im Wireframe ist nur KW 43 als Woche befüllt');
+      else if (st.monthIdx < MONTHS.length - 1) self.setState({ monthIdx: st.monthIdx + 1 });
+      else self.showToast('Im Wireframe sind nur Oktober und November befüllt');
+    },
+    todayP: function () { if (!isWeek) self.setState({ monthIdx: 0 }); },
+    month: isWeek ? { heads: [], cells: [] } : buildMonth(self, st)
+  };
+}
+
+function S(id, day, kind, start, end, needed, people, name) {
+  return { id: id, day: day, kind: kind, start: start, end: end, needed: needed, name: name || KINDS[kind].label,
+    people: people.map(function (p) { return { id: p[0], st: p[1] }; }) };
+}
+function withSeries(list) {
+  return list.map(function (s) { s.series = null; return s; });
+}
+function initialShifts() {
+  return withSeries([
+    S('s1', 0, 'frueh', 420, 780, 2, [['anna', 'ok'], ['ben', 'ok']]),
+    S('s2', 0, 'spaet', 720, 1200, 2, [['clara', 'ok'], ['me', 'ok']]),
+    S('s3', 1, 'frueh', 420, 780, 2, [['anna', 'ok'], ['elif', 'req']]),
+    S('s4', 1, 'spaet', 720, 1200, 2, [['ben', 'ok'], ['david', 'req']]),
+    S('s5', 2, 'frueh', 420, 780, 2, [['me', 'ok'], ['felix', 'ok']]),
+    S('s6', 2, 'spaet', 720, 1200, 2, [['clara', 'ok'], ['david', 'ok']]),
+    S('s7', 3, 'manual', 360, 600, 1, [['felix', 'req']], 'Vorarbeit Produktion'),
+    S('s8', 3, 'frueh', 420, 780, 2, [['anna', 'ok']]),
+    S('s9', 3, 'spaet', 720, 1200, 2, [['clara', 'req'], ['felix', 'req']]),
+    S('s10', 4, 'frueh', 420, 780, 2, [['ben', 'ok'], ['elif', 'ok']]),
+    S('s11', 4, 'spaet', 720, 1200, 2, [['clara', 'ok'], ['david', 'req']]),
+    S('s12', 5, 'frueh', 420, 780, 2, [['anna', 'ok'], ['felix', 'ok']]),
+    S('s13', 5, 'spaet', 720, 1200, 2, [['me', 'ok'], ['ben', 'req']]),
+    S('s14', 6, 'frueh', 420, 780, 2, [['elif', 'ok']]),
+    S('s15', 6, 'spaet', 720, 1200, null, [['clara', 'ok']])
+  ]);
+}
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function fmt(m) { m = ((m % 1440) + 1440) % 1440; return pad(Math.floor(m / 60)) + ':' + pad(m % 60); }
+function overEnd(start, end) { return end <= start ? end + 1440 : end; }
+function spanText(start, end) { return fmt(start) + '–' + fmt(end) + (end > 1440 ? ' (+1 Tag)' : ''); }
+function num(v) { return (Math.round(v * 10) / 10).toFixed(1).replace('.', ','); }
+function parseTime(v) {
+  if (!v) return null;
+  var p = String(v).split(':');
+  var h = parseInt(p[0], 10), mi = parseInt(p[1], 10);
+  if (isNaN(h) || isNaN(mi)) return null;
+  return h * 60 + mi;
+}
+function okCount(s) { return s.people.filter(function (p) { return p.st === 'ok'; }).length; }
+function reqCount(s) { return s.people.filter(function (p) { return p.st === 'req'; }).length; }
+function understaffed(s) { return s.needed == null ? okCount(s) === 0 : okCount(s) < s.needed; }
+function fillLabel(s) { return s.needed == null ? okCount(s) + ' · unbegrenzt' : okCount(s) + '/' + s.needed; }
+function rowOf(m) { var r = Math.round((m - DAY_START) / SLOT) + 1; return Math.max(1, Math.min(SLOTS + 1, r)); }
+function durInfo(start, end) {
+  var d = end - start;
+  if (d <= 0) return { short: '–', note: 'Das Ende muss nach dem Beginn liegen.' };
+  if (d > 360) return { short: num(d / 60) + ' h brutto · ' + num((d - 30) / 60) + ' h netto', note: 'Über 6 h werden automatisch 30 min unbezahlte Pause abgezogen. Wann die Pause gemacht wird, ist flexibel.' };
+  return { short: num(d / 60) + ' h', note: 'Bis 6 h ist keine Pause vorgeschrieben, es wird nichts abgezogen.' };
+}
+function countOccur(startIso, untilIso, wds) {
+  var d = new Date(startIso + 'T12:00:00'), end = new Date(untilIso + 'T12:00:00'), n = 0, guard = 0;
+  while (d <= end && guard < 120) {
+    if (wds.indexOf((d.getDay() + 6) % 7) >= 0) n++;
+    d.setDate(d.getDate() + 1);
+    guard++;
+  }
+  return n;
+}
+function parseNeeded(v) {
+  if (v === '' || v == null) return null;
+  var n = parseInt(v, 10);
+  return isNaN(n) ? null : Math.max(1, n);
+}
+function assignChips(selected, onChange) {
+  return PEOPLE_ORDER.map(function (pid) {
+    var on = selected.indexOf(pid) >= 0;
+    return {
+      ini: PEOPLE[pid].ini, label: PEOPLE[pid].name + (pid === 'me' ? ' (Du)' : ''),
+      pressed: on ? 'true' : 'false', showCheck: on,
+      bg: on ? '#E6ECF5' : '#FFFFFF', fg: on ? '#1E3A66' : '#2C3442', border: on ? '#1E3A66' : '#C9D0DA',
+      toggle: function () {
+        var l = selected.slice(), i = l.indexOf(pid);
+        if (i >= 0) l.splice(i, 1); else l.push(pid);
+        onChange(l);
+      }
+    };
+  });
+}
+function cascade(list) {
+  var sorted = list.slice().sort(function (a, b) { return a.start - b.start || (b.end - b.start) - (a.end - a.start); });
+  var level = {};
+  sorted.forEach(function (s, idx) {
+    var lv = -1;
+    for (var j = 0; j < idx; j++) {
+      var o = sorted[j];
+      if (o.start < s.end && s.start < o.end) lv = Math.max(lv, level[o.id]);
+    }
+    level[s.id] = lv + 1;
+  });
+  return sorted.map(function (s, idx) {
+    var lv = Math.min(level[s.id], 2);
+    return {
+      s: s,
+      ml: lv ? 'calc(' + (lv * 20) + '% + 2px)' : '2px',
+      z: String(2 + idx),
+      shadow: lv ? '0 0 0 2px #FFFFFF, 0 2px 8px rgba(16,24,40,0.18)' : 'none',
+      compact: (s.end - s.start) <= 60
+    };
+  });
+}
+function navVals(self, labels) {
+  var open = !self.state.navCollapsed;
+  function tip(t) { return open ? '' : t; }
+  return {
+    open: open, closed: !open,
+    flex: open ? '1 1 220px' : '0 0 72px', pad: open ? '20px 14px' : '20px 12px',
+    headDir: open ? 'row' : 'column', itemPad: open ? '0 12px' : '0', justify: open ? 'flex-start' : 'center',
+    expanded: open ? 'true' : 'false', toggleLabel: open ? 'Menü einklappen' : 'Menü ausklappen',
+    toggle: function () { self.setState({ navCollapsed: !self.state.navCollapsed }); },
+    tipDash: tip('Dashboard'), tipPlan: tip('Schichtplan'), tipStunden: tip(labels.stunden),
+    tipTeam: tip('Team'), tipExport: tip('Export · nach dem MVP'), tipProfil: tip('Profil & Einstellungen'),
+    tipUser: tip(labels.user), tipLogout: tip('Abmelden')
+  };
+}
+
+var INIT = {};
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = Object.assign({ shifts: initialShifts(), filter: 'all', view: 'week', monthIdx: 0, drag: null, dialog: null, detailId: null, form: null, delId: null, delScope: 'one', toast: null, navCollapsed: false }, INIT);
+  }
+  componentWillUnmount() { clearTimeout(this._t); }
+  showToast(msg) {
+    var self = this;
+    clearTimeout(this._t);
+    this.setState({ toast: msg });
+    this._t = setTimeout(function () { self.setState({ toast: null }); }, 3000);
+  }
+  setPeople(id, fn) {
+    this.setState({ shifts: this.state.shifts.map(function (s) { return s.id === id ? Object.assign({}, s, { people: fn(s.people) }) : s; }) });
+  }
+  closeAll() {
+    var f = this.state.form;
+    if (this.state.dialog === 'form' && f && f.editId) { this.setState({ dialog: 'detail', detailId: f.editId, form: null }); return; }
+    this.setState({ dialog: null, detailId: null, form: null });
+  }
+  openEdit(s) {
+    this.setState({ dialog: 'form', form: { editId: s.id, kind: s.kind, day: s.day, start: s.start, end: s.end, name: s.kind === 'manual' ? s.name : '',
+      needed: s.needed == null ? '' : String(s.needed), repeat: false, weekdays: [s.day], until: '2026-10-31', assign: [], error: '', fromDrag: false } });
+  }
+  setForm(patch) { this.setState({ form: Object.assign({}, this.state.form, patch) }); }
+  openForm(opts) {
+    var base = { kind: 'frueh', day: 0, start: 420, end: 780, name: '', needed: '2', repeat: false, weekdays: [0], until: '2026-10-31', assign: [], error: '', fromDrag: false };
+    var f = Object.assign(base, opts || {});
+    if (!opts || opts.weekdays == null) f.weekdays = [f.day];
+    this.setState({ dialog: 'form', drag: null, form: f });
+  }
+  saveForm() {
+    var f = this.state.form;
+    if (f.editId) {
+      var cur = this.state.shifts.filter(function (x) { return x.id === f.editId; })[0];
+      var nm = cur.kind === 'manual' ? (f.name || '').trim() : cur.name;
+      if (!nm) { this.setForm({ error: 'Bitte gib der Schicht einen Namen.' }); return; }
+      if (f.end % 1440 === f.start % 1440) { this.setForm({ error: 'Beginn und Ende dürfen nicht gleich sein.' }); return; }
+      var upd = { name: nm, start: f.start, end: overEnd(f.start, f.end), needed: parseNeeded(f.needed) };
+      this.setState({ shifts: this.state.shifts.map(function (x) { return x.id === cur.id ? Object.assign({}, x, upd) : x; }), dialog: 'detail', detailId: cur.id, form: null });
+      var pn = cur.people.length;
+      this.showToast('Schicht geändert' + (pn ? ' · ' + pn + (pn === 1 ? ' Person bekommt' : ' Personen bekommen') + ' eine Neuigkeit' : ''));
+      return;
+    }
+    var needed = parseNeeded(f.needed);
+    var people = f.assign.map(function (pid) { return { id: pid, st: 'ok' }; });
+    if (f.kind === 'manual') {
+      var name = (f.name || '').trim();
+      if (!name) { this.setForm({ error: 'Bitte gib der Schicht einen Namen.' }); return; }
+      if (f.end % 1440 === f.start % 1440) { this.setForm({ error: 'Beginn und Ende dürfen nicht gleich sein.' }); return; }
+      var s = { id: 'm' + Date.now(), day: f.day, kind: 'manual', start: f.start, end: overEnd(f.start, f.end), needed: needed, name: name, people: people };
+      this.setState({ shifts: this.state.shifts.concat([s]), dialog: null, form: null });
+      this.showToast('»' + name + '« angelegt');
+      return;
+    }
+    var def = TEMPLATES.filter(function (x) { return x.id === f.kind; })[0];
+    var days = f.repeat ? f.weekdays.filter(function (w) { return w >= f.day; }) : [f.day];
+    var n = f.repeat ? countOccur(DAYS[f.day].iso, f.until, f.weekdays) : 1;
+    var stamp = Date.now();
+    var add = days.map(function (w, i) {
+      return { id: 'n' + stamp + '_' + i, day: w, kind: f.kind, start: def.start, end: def.end, needed: needed, name: def.name, series: f.repeat ? 'ser' + stamp : null,
+        people: people.map(function (p) { return { id: p.id, st: p.st }; }) };
+    });
+    var until = UNTILS.filter(function (u) { return u.val === f.until; })[0];
+    this.setState({ shifts: this.state.shifts.concat(add), dialog: null, form: null });
+    this.showToast(f.repeat ? n + ' Schichten angelegt (bis ' + until.short + ')' : def.name + ' am ' + DAYS[f.day].short + ', ' + DAYS[f.day].date + ' angelegt');
+  }
+  renderVals() {
+    var self = this, st = this.state, drag = st.drag;
+    var isWeek = st.view === 'week';
+
+    var reqTotal = 0, underTotal = 0;
+    st.shifts.forEach(function (s) { reqTotal += reqCount(s); if (understaffed(s)) underTotal++; });
+
+    function matches(s) {
+      if (st.filter === 'mine') return s.people.some(function (p) { return p.id === 'me'; });
+      if (st.filter === 'under') return understaffed(s);
+      if (st.filter === 'req') return reqCount(s) > 0;
+      return true;
+    }
+
+    var filters = [
+      { id: 'all', label: 'Alle' },
+      { id: 'mine', label: 'Meine Schichten' },
+      { id: 'under', label: 'Freie Plätze', count: underTotal },
+      { id: 'req', label: 'Mit Anfragen', count: reqTotal }
+    ].map(function (f) {
+      var on = st.filter === f.id;
+      return {
+        label: f.label, pressed: on ? 'true' : 'false',
+        bg: on ? '#1E3A66' : '#FFFFFF', fg: on ? '#FFFFFF' : '#2C3442', border: on ? '#1E3A66' : '#C9D0DA',
+        hasCount: f.count != null, count: f.count,
+        countBg: on ? '#FFFFFF' : '#E6ECF5', countFg: '#1E3A66',
+        pick: function () { self.setState({ filter: f.id }); }
+      };
+    });
+
+    var hours = [];
+    for (var h = 5; h <= 21; h++) hours.push({ row: ((h - 5) * 2 + 1) + ' / span 2', label: pad(h) + ':00' });
+
+    var days = DAYS.map(function (d, di) {
+      var list = st.shifts.filter(function (s) { return s.day === di; });
+
+      var slots = [];
+      for (var i = 0; i < SLOTS; i++) {
+        (function (i) {
+          slots.push({
+            row: (i + 1) + ' / span 1',
+            lineStyle: i % 2 === 0 ? 'solid' : 'dashed',
+            lineColor: i % 2 === 0 ? '#E3E7EC' : '#EFF1F4',
+            down: function (e) {
+              if (e && typeof e.button === 'number' && e.button !== 0) return;
+              if (e && e.preventDefault) e.preventDefault();
+              self.setState({ drag: { day: di, a: i, b: i } });
+            },
+            enter: function () {
+              var dr = self.state.drag;
+              if (dr && dr.day === di && dr.b !== i) self.setState({ drag: { day: di, a: dr.a, b: i } });
+            }
+          });
+        })(i);
+      }
+
+      var hasDrag = !!(drag && drag.day === di), dragRow = '1 / 2', dragLabel = '';
+      if (hasDrag) {
+        var a = Math.min(drag.a, drag.b), b = Math.max(drag.a, drag.b);
+        dragRow = (a + 1) + ' / ' + (b + 2);
+        dragLabel = fmt(DAY_START + a * SLOT) + '–' + fmt(DAY_START + (b + 1) * SLOT);
+      }
+
+      var dayReq = 0;
+      var shifts = cascade(list).map(function (c) {
+        var s = c.s, k = KINDS[s.kind], ok = okCount(s), rq = reqCount(s), under = understaffed(s);
+        dayReq += rq;
+        var free = s.needed == null ? null : Math.max(0, s.needed - ok);
+        var avatars = s.people.slice(0, 4).map(function (p) {
+          var isOk = p.st === 'ok';
+          return {
+            ini: PEOPLE[p.id].ini,
+            title: PEOPLE[p.id].name + (p.id === 'me' ? ' (Du)' : '') + ' – ' + (isOk ? 'bestätigt' : 'angefragt'),
+            ok: isOk, req: !isOk, bstyle: isOk ? 'solid' : 'dashed', bcolor: isOk ? '#1E3A66' : '#5E6775',
+            badgeBg: isOk ? '#1E3A66' : '#FFFFFF', badgeFg: isOk ? '#FFFFFF' : '#1E3A66'
+          };
+        });
+        var more = s.people.length - avatars.length;
+        return {
+          title: s.name, time: spanText(s.start, s.end), fill: fillLabel(s),
+          row: rowOf(s.start) + ' / ' + rowOf(s.end), ml: c.ml, z: c.z, shadow: c.shadow,
+          compact: c.compact, full: !c.compact,
+          bg: k.bg, border: k.border, fg: k.text, bstyle: under ? 'dashed' : 'solid',
+          op: matches(s) ? '1' : '0.25',
+          avatars: avatars, hasMore: more > 0, moreLabel: '+' + more,
+          showOpen: under, freeLabel: free == null ? 'unbegrenzt' : free + ' frei',
+          showReq: rq > 0, reqLabel: rq + (rq === 1 ? ' Anfrage' : ' Anfragen'),
+          showFull: s.needed != null && !under && rq === 0,
+          aria: s.name + ', ' + d.long + ', ' + fmt(s.start) + ' bis ' + fmt(s.end) + ', besetzt ' + fillLabel(s) + (rq ? ', ' + rq + ' offene Anfragen' : ''),
+          open: function () { self.setState({ dialog: 'detail', detailId: s.id }); }
+        };
+      });
+
+      return {
+        short: d.short, date: d.date, today: di === 0,
+        dateBg: di === 0 ? '#1E3A66' : '#EEF1F5', dateFg: di === 0 ? '#FFFFFF' : '#2C3442',
+        colBg: di === 0 ? '#FAFBFE' : '#FFFFFF',
+        hasReq: dayReq > 0, reqN: dayReq, reqTitle: dayReq + (dayReq === 1 ? ' offene Anfrage' : ' offene Anfragen'),
+        slots: slots, shifts: shifts, hasDrag: hasDrag, dragRow: dragRow, dragLabel: dragLabel
+      };
+    });
+
+    var formV = { kinds: [], weekdays: [], untils: [], assign: [] };
+    if (st.dialog === 'form' && st.form) {
+      var f = st.form, isMan = f.kind === 'manual';
+      var tdef = isMan ? null : TEMPLATES.filter(function (x) { return x.id === f.kind; })[0];
+      var isEdit = !!f.editId, useF = isMan || isEdit;
+      var editShift = isEdit ? st.shifts.filter(function (x) { return x.id === f.editId; })[0] : null;
+      var s0 = useF ? f.start : tdef.start, e0 = useF ? overEnd(f.start, f.end) : tdef.end;
+      var neededN = parseNeeded(f.needed), okN = editShift ? okCount(editShift) : 0;
+      var fdi = durInfo(s0, e0);
+      var until = UNTILS.filter(function (u) { return u.val === f.until; })[0];
+      var n = (!isMan && f.repeat) ? countOccur(DAYS[f.day].iso, f.until, f.weekdays) : 1;
+      var wdNames = f.weekdays.map(function (w) { return DAYS[w].short; }).join(', ');
+      var options = TEMPLATES.map(function (x) {
+        return { id: x.id, name: x.name, sub: fmt(x.start) + '–' + fmt(x.end) + ' · ' + num((x.end - x.start) / 60) + ' h', bg: KINDS[x.id].bg, border: KINDS[x.id].border, isManual: false };
+      }).concat([{ id: 'manual', name: 'Manuell', sub: 'Name & Zeit frei', bg: KINDS.manual.bg, border: KINDS.manual.border, isManual: true }]);
+      formV = {
+        sub: isEdit ? DAYS[f.day].long + ' · ' + (isMan ? 'Manuelle Schicht' : 'Vorlage ' + KINDS[f.kind].label) : f.fromDrag
+          ? 'Im Kalender gezogen: ' + DAYS[f.day].short + ', ' + DAYS[f.day].date + ' · ' + fmt(f.start) + '–' + fmt(f.end)
+          : 'Wähle eine Vorlage oder lege eine manuelle Schicht an.',
+        kinds: options.map(function (o) {
+          var sel = o.id === f.kind;
+          return {
+            name: o.name, sub: o.sub, bg: o.bg, border: o.border, isManual: o.isManual,
+            ring: sel ? '#1E3A66' : '#DCE1E8', ringW: sel ? '2px' : '1px', checked: sel ? 'true' : 'false',
+            pick: function () {
+              var cur = self.state.form, patch = { kind: o.id, error: '' };
+              if (o.id === 'manual' && cur.kind !== 'manual' && !cur.fromDrag) {
+                var t = TEMPLATES.filter(function (x) { return x.id === cur.kind; })[0];
+                patch.start = t.start; patch.end = t.end;
+              }
+              self.setForm(patch);
+            }
+          };
+        }),
+        kindHint: isMan ? 'Manuelle Schichten sind spontane Einzelschichten ohne Wiederholung.' : 'Früh- und Spätschicht sind fest hinterlegt.',
+        isManual: isMan, isTemplate: !isMan,
+        title: isEdit ? 'Schicht bearbeiten' : 'Schicht hinzufügen', saveLabel: isEdit ? 'Speichern' : 'Schicht anlegen',
+        showKinds: !isEdit, showName: isMan, showDay: !isEdit, showTimes: useF, showRepeat: false, showAssign: !isEdit,
+        neededWarn: isEdit && neededN != null && neededN < okN,
+        neededWarnText: 'Es sind schon ' + okN + ' Personen bestätigt. Niemand wird automatisch entfernt, die Schicht ist dann überbesetzt.',
+        hasInform: isEdit && !!editShift && editShift.people.length > 0,
+        informText: editShift ? 'Eingetragene Personen (' + editShift.people.length + ') bekommen eine Neuigkeit über die Änderung.' : '',
+        overnight: useF && e0 > 1440, overnightText: 'Endet am nächsten Tag (' + (f.day < 6 ? DAYS[f.day + 1].short + ', ' + DAYS[f.day + 1].date : 'Mo, 26.10.') + ' ' + fmt(e0) + ')',
+        nameValue: f.name, setName: function (e) { self.setForm({ name: e.target.value, error: '' }); },
+        dayValue: String(f.day),
+        setDay: function (e) {
+          var v = parseInt(e.target.value, 10), cur = self.state.form;
+          self.setForm({ day: v, weekdays: cur.repeat ? cur.weekdays : [v] });
+        },
+        startValue: fmt(f.start), endValue: fmt(f.end),
+        setStart: function (e) { var v = parseTime(e.target.value); if (v != null) self.setForm({ start: v, error: '' }); },
+        setEnd: function (e) { var v = parseTime(e.target.value); if (v != null) self.setForm({ end: v, error: '' }); },
+        neededValue: f.needed, setNeeded: function (e) { self.setForm({ needed: e.target.value }); },
+        repeatOn: f.repeat, repeatChecked: f.repeat ? 'true' : 'false',
+        repeatBg: f.repeat ? '#1E3A66' : '#A9B2BF', knobX: f.repeat ? '23px' : '3px',
+        toggleRepeat: function () {
+          var cur = self.state.form, r = !cur.repeat;
+          self.setForm({ repeat: r, weekdays: r ? (cur.weekdays.length ? cur.weekdays : [cur.day]) : [cur.day] });
+        },
+        weekdays: DAYS.map(function (d, wi) {
+          var on = f.weekdays.indexOf(wi) >= 0;
+          return {
+            label: d.short, pressed: on ? 'true' : 'false',
+            bg: on ? '#1E3A66' : '#FFFFFF', fg: on ? '#FFFFFF' : '#2C3442', border: on ? '#1E3A66' : '#C9D0DA',
+            toggle: function () {
+              var w = self.state.form.weekdays.slice(), i = w.indexOf(wi);
+              if (i >= 0) w.splice(i, 1); else w.push(wi);
+              w.sort(function (x, y) { return x - y; });
+              self.setForm({ weekdays: w });
+            }
+          };
+        }),
+        untils: UNTILS.map(function (u) {
+          var on = u.val === f.until;
+          return {
+            label: u.label, sub: u.sub, pressed: on ? 'true' : 'false',
+            bg: on ? '#E6ECF5' : '#FFFFFF', fg: on ? '#1E3A66' : '#2C3442', border: on ? '#1E3A66' : '#C9D0DA',
+            pick: function () { self.setForm({ until: u.val }); }
+          };
+        }),
+        summary: f.repeat
+          ? (n > 0 ? 'Es werden ' + n + ' Schichten angelegt: jeden ' + wdNames + ' ab ' + DAYS[f.day].date + ' bis ' + until.short : 'Wähle mindestens einen Wochentag.')
+          : 'Eine Schicht am ' + DAYS[f.day].long + '.',
+        assign: assignChips(f.assign, function (l) { self.setForm({ assign: l }); }),
+        hasPause: (e0 - s0) > 360,
+        hasError: !!f.error, error: f.error,
+        cannotSave: !isMan && f.repeat && n === 0, saveOp: (!isMan && f.repeat && n === 0) ? '0.45' : '1',
+        save: function () { self.saveForm(); }
+      };
+    }
+
+    var detV = { confirmed: [], reqs: [], others: [] };
+    var detShift = st.dialog === 'detail' ? st.shifts.filter(function (x) { return x.id === st.detailId; })[0] : null;
+    if (detShift) {
+      var s = detShift, k = KINDS[s.kind], ok = okCount(s), ddi = durInfo(s.start, s.end);
+      var involved = s.people.map(function (p) { return p.id; });
+      var confirmed = s.people.filter(function (p) { return p.st === 'ok'; }).map(function (p) {
+        return {
+          ini: PEOPLE[p.id].ini, name: PEOPLE[p.id].name + (p.id === 'me' ? ' (Du)' : ''),
+          remove: function () {
+            self.setPeople(s.id, function (ps) { return ps.filter(function (q) { return q.id !== p.id; }); });
+            self.showToast(PEOPLE[p.id].name + ' entfernt');
+          }
+        };
+      });
+      var reqs = s.people.filter(function (p) { return p.st === 'req'; }).map(function (p) {
+        return {
+          ini: PEOPLE[p.id].ini, name: PEOPLE[p.id].name,
+          confirm: function () {
+            self.setPeople(s.id, function (ps) { return ps.map(function (q) { return q.id === p.id ? { id: q.id, st: 'ok' } : q; }); });
+            self.showToast(PEOPLE[p.id].name + ' bestätigt');
+          },
+          reject: function () {
+            self.setPeople(s.id, function (ps) { return ps.filter(function (q) { return q.id !== p.id; }); });
+            self.showToast('Anfrage von ' + PEOPLE[p.id].name + ' abgelehnt');
+          }
+        };
+      });
+      var others = PEOPLE_ORDER.filter(function (pid) { return pid !== 'me' && involved.indexOf(pid) < 0; }).map(function (pid) {
+        return {
+          ini: PEOPLE[pid].ini, label: PEOPLE[pid].name,
+          assign: function () {
+            self.setPeople(s.id, function (ps) { return ps.concat([{ id: pid, st: 'ok' }]); });
+            self.showToast(PEOPLE[pid].name + ' zugeteilt');
+          }
+        };
+      });
+      detV = {
+        kindLabel: s.kind === 'manual' ? 'Manuelle Schicht' : 'Vorlage · ' + k.label,
+        title: s.name, bg: k.bg, fg: k.text, border: k.border,
+        dateLine: DAYS[s.day].long + ' · ' + spanText(s.start, s.end),
+        fill: s.needed == null ? ok + ' bestätigt · unbegrenzte Plätze' : ok + ' von ' + s.needed + ' besetzt',
+        hasBar: s.needed != null,
+        barPct: (s.needed ? Math.min(100, Math.round(ok / s.needed * 100)) : 0) + '%',
+        over: s.needed != null && ok > s.needed,
+        isFull: s.needed != null && ok >= s.needed,
+        okN: confirmed.length, confirmed: confirmed, noOk: confirmed.length === 0,
+        reqN: reqs.length, reqs: reqs, noReq: reqs.length === 0,
+        showMe: involved.indexOf('me') < 0,
+        assignMe: function () {
+          self.setPeople(s.id, function (ps) { return ps.concat([{ id: 'me', st: 'ok' }]); });
+          self.showToast('Du bist eingetragen');
+        },
+        others: others,
+        hasPause: (s.end - s.start) > 360,
+        del: function () { self.setState({ delId: s.id, delScope: 'one' }); },
+        edit: function () { self.openEdit(s); }
+      };
+    }
+
+    var delCfm = { scopes: [] }, dsh = st.delId ? st.shifts.filter(function (x) { return x.id === st.delId; })[0] : null;
+    if (dsh) {
+      var dk = KINDS[dsh.kind], scope = st.delScope || 'one';
+      var following = dsh.series ? st.shifts.filter(function (x) { return x.series === dsh.series && x.day >= dsh.day; }) : [dsh];
+      var targets = scope === 'all' ? following : [dsh];
+      var booked = targets.filter(function (x) { return x.people.length > 0; }).length;
+      delCfm = {
+        title: dsh.name, sub: DAYS[dsh.day].long + ' · ' + spanText(dsh.start, dsh.end), bg: dk.bg, border: dk.border, fg: dk.text,
+        text: dsh.series ? 'Diese Schicht gehört zu einer wöchentlichen Serie. Was möchtest du löschen?' : 'Willst du diese Schicht wirklich löschen? Anfragen und Zuteilungen dafür entfallen.',
+        isSeries: !!dsh.series,
+        scopes: [
+          { id: 'one', label: 'Nur diese Schicht', sub: DAYS[dsh.day].long },
+          { id: 'all', label: 'Diese und alle folgenden', sub: following.length + ' Schichten der Serie ab ' + DAYS[dsh.day].date }
+        ].map(function (o) {
+          var on = scope === o.id;
+          return { label: o.label, sub: o.sub, on: on, checked: on ? 'true' : 'false', ring: on ? '#1E3A66' : '#DCE1E8', ringW: on ? '2px' : '1px', dotRing: on ? '#1E3A66' : '#9AA3B1',
+            pick: function () { self.setState({ delScope: o.id }); } };
+        }),
+        hasBooked: booked > 0,
+        booked: targets.length === 1 ? 'In dieser Schicht sind schon Personen eingetragen. Sie bekommen eine Neuigkeit.' : 'In ' + booked + ' von ' + targets.length + ' Schichten sind schon Personen eingetragen. Sie bekommen eine Neuigkeit.',
+        okLabel: targets.length > 1 ? targets.length + ' Schichten löschen' : 'Löschen',
+        cancel: function () { self.setState({ delId: null, delScope: 'one' }); },
+        ok: function () {
+          var ids = targets.map(function (x) { return x.id; });
+          self.setState({ shifts: self.state.shifts.filter(function (x) { return ids.indexOf(x.id) < 0; }), delId: null, delScope: 'one', dialog: null, detailId: null });
+          self.showToast(ids.length > 1 ? ids.length + ' Schichten gelöscht' : 'Schicht gelöscht');
+        }
+      };
+    }
+
+    return Object.assign(periodVals(self, st), {
+      showDelCfm: !!dsh, delCfm: delCfm,
+      nav: navVals(this, { stunden: 'Stunden', user: 'Maria H. · Manager' }),
+      endDrag: function () {
+        var dr = self.state.drag;
+        if (!dr) return;
+        var a = Math.min(dr.a, dr.b), b = Math.max(dr.a, dr.b);
+        self.openForm({ kind: 'manual', day: dr.day, start: DAY_START + a * SLOT, end: DAY_START + (b + 1) * SLOT, needed: '1', fromDrag: true });
+      },
+      blockPE: drag ? 'none' : 'auto',
+      noWeek: function () { self.showToast('Im Wireframe ist nur KW 43 mit Beispieldaten befüllt'); },
+      isWeek: isWeek, isMonth: !isWeek,
+      weekPressed: isWeek ? 'true' : 'false', monthPressed: isWeek ? 'false' : 'true',
+      weekBg: isWeek ? '#FFFFFF' : 'transparent', weekFg: isWeek ? '#1E3A66' : '#4A5361',
+      monthBg: isWeek ? 'transparent' : '#FFFFFF', monthFg: isWeek ? '#4A5361' : '#1E3A66',
+      showWeek: function () { self.setState({ view: 'week' }); },
+      showMonth: function () { self.setState({ view: 'month' }); },
+      openForm: function () { self.openForm(); },
+      close: function () { self.closeAll(); },
+      filters: filters, hours: hours, days: days,
+      showForm: st.dialog === 'form', form: formV,
+      showDet: !!detShift, det: detV,
+      hasToast: !!st.toast, toast: st.toast || ''
+    });
+  }
+}
+</script>
+</body>
+</html>
